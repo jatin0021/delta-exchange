@@ -1,11 +1,26 @@
 import { useState, useContext } from "react";
 import Mycontext from "../Context/Mycontext";
-import { FiSearch, FiBell, FiSettings, FiUser, FiGrid, FiZap } from "react-icons/fi";
+import {
+  FiSearch,
+  FiBell,
+  FiSettings,
+  FiUser,
+  FiGrid,
+  FiZap,
+  FiLink,
+  FiBarChart2,
+  FiGift,
+  FiShare2,
+  FiCpu,
+  FiMonitor,
+} from "react-icons/fi";
 import { BsCurrencyRupee } from "react-icons/bs";
-import { FaSun, FaMoon } from "react-icons/fa";
+import { FaSun, FaMoon, FaRobot, FaDatabase } from "react-icons/fa";
 
 export default function Navbar() {
   const [isOpen, setIsOpen] = useState(false);
+  const [showAlgoDropdown, setShowAlgoDropdown] = useState(false);
+  const [showMoreDropdown, setShowMoreDropdown] = useState(false);
   const { mode, toggleMode } = useContext(Mycontext);
 
   const menuItems = [
@@ -18,6 +33,67 @@ export default function Navbar() {
     "More",
   ];
 
+  const algoDropdownItems = [
+    {
+      icon: <FiLink className="text-orange-400 text-lg" />,
+      title: "APIs",
+      desc: "Create API key and Start Trading",
+    },
+    {
+      icon: <FaRobot className="text-orange-400 text-lg" />,
+      title: "Trading Bot",
+      desc: "Automate Bots from TradingView",
+    },
+    {
+      icon: <FaDatabase className="text-orange-400 text-lg" />,
+      title: "Trade Data",
+      desc: "Download historical tick by tick data",
+    },
+  ];
+
+  const moreDropdownItems = [
+    {
+      section: "Trade",
+      items: [
+        {
+          icon: <FiCpu className="text-orange-400 text-lg" />,
+          title: "Strategy Builder",
+          desc: "Create and analyse basket orders",
+        },
+        {
+          icon: <FiMonitor className="text-orange-400 text-lg" />,
+          title: "Demo Trading",
+          desc: "Simulate real trading without risk",
+        },
+      ],
+    },
+    {
+      section: "Data",
+      items: [
+        {
+          icon: <FiBarChart2 className="text-orange-400 text-lg" />,
+          title: "Analytics",
+          desc: "A dashboard to visualize options data",
+        },
+      ],
+    },
+    {
+      section: "Rewards & Promotions",
+      items: [
+        {
+          icon: <FiGift className="text-orange-400 text-lg" />,
+          title: "Offers",
+          desc: "Claim Your Rewards",
+        },
+        {
+          icon: <FiShare2 className="text-orange-400 text-lg" />,
+          title: "Referral Program",
+          desc: "Refer Friends and get rewards",
+        },
+      ],
+    },
+  ];
+
   return (
     <nav
       className={`${
@@ -26,8 +102,7 @@ export default function Navbar() {
           : "bg-white text-black border-gray-300"
       } border-b w-full transition-colors duration-300`}
     >
-      <div className="max-w-[1440px] mx-auto px-3 md:px-6 flex items-center justify-between h-14">
-        
+      <div className="max-w-[1440px] mx-auto px-3 md:px-6 flex items-center justify-between h-14 relative">
         {/* Left Section */}
         <div className="flex items-center gap-8">
           {/* Logo */}
@@ -44,17 +119,106 @@ export default function Navbar() {
           </div>
 
           {/* Desktop Menu */}
-          <div className="hidden lg:flex items-center gap-5">
+          <div className="hidden lg:flex items-center gap-5 relative">
             {menuItems.map((item, idx) => (
               <div
                 key={idx}
                 className="relative cursor-pointer hover:text-orange-400 text-sm"
+                onMouseEnter={() => {
+                  if (item === "AlgoHub") setShowAlgoDropdown(true);
+                  if (item === "More") setShowMoreDropdown(true);
+                }}
+                onMouseLeave={() => {
+                  if (item === "AlgoHub") setShowAlgoDropdown(false);
+                  if (item === "More") setShowMoreDropdown(false);
+                }}
               >
                 {item}
                 {item === "AlgoHub" && (
-                  <span className="absolute -top-2 right-[-18px] text-[10px] bg-yellow-500 text-black font-semibold px-1 rounded">
-                    New
-                  </span>
+                  <>
+                    <span className="absolute -top-2 right-[-18px] text-[10px] bg-yellow-500 text-black font-semibold px-1 rounded">
+                      New
+                    </span>
+
+                    {/* AlgoHub Dropdown */}
+                    {showAlgoDropdown && (
+                      <div
+                        className={`absolute top-6 left-0 w-64 mt-2 p-3 rounded-lg shadow-lg z-50 ${
+                          mode === "dark" ? "bg-[#1E1F24]" : "bg-white"
+                        }`}
+                      >
+                        {algoDropdownItems.map((d, i) => (
+                          <div
+                            key={i}
+                            className={`flex items-start gap-3 px-3 py-2 rounded-md cursor-pointer hover:bg-[#2A2B30] transition ${
+                              mode === "dark" ? "text-gray-200" : "text-gray-700"
+                            }`}
+                          >
+                            {d.icon}
+                            <div>
+                              <p className="text-sm font-medium">{d.title}</p>
+                              <p
+                                className={`text-xs ${
+                                  mode === "dark"
+                                    ? "text-gray-400"
+                                    : "text-gray-500"
+                                }`}
+                              >
+                                {d.desc}
+                              </p>
+                            </div>
+                          </div>
+                        ))}
+                      </div>
+                    )}
+                  </>
+                )}
+
+                {/* More Dropdown */}
+                {item === "More" && showMoreDropdown && (
+                  <div
+                    className={`absolute top-6 left-0 w-72 mt-2 p-3 rounded-lg shadow-lg z-50 ${
+                      mode === "dark" ? "bg-[#1E1F24]" : "bg-white"
+                    }`}
+                  >
+                    {moreDropdownItems.map((section, sIdx) => (
+                      <div key={sIdx} className="mb-3 last:mb-0">
+                        <p
+                          className={`text-xs font-semibold mb-1 ${
+                            mode === "dark"
+                              ? "text-gray-400"
+                              : "text-gray-500"
+                          }`}
+                        >
+                          {section.section}
+                        </p>
+                        {section.items.map((d, i) => (
+                          <div
+                            key={i}
+                            className={`flex items-start gap-3 px-3 py-2 rounded-md cursor-pointer hover:bg-[#2A2B30] transition ${
+                              mode === "dark"
+                                ? "text-gray-200"
+                                : "text-gray-700"
+                            }`}
+                          >
+                            {d.icon}
+                            <div>
+                              <p className="text-sm font-medium">{d.title}</p>
+                              <p
+                                className={`text-xs ${
+                                  mode === "dark"
+                                    ? "text-gray-400"
+                                    : "text-gray-500"
+                                }`}
+                              >
+                                {d.desc}
+                              </p>
+                            </div>
+                          </div>
+                        ))}
+                      </div>
+                    ))}
+                  </div>
                 )}
               </div>
             ))}

@@ -1,10 +1,10 @@
 import { Routes, Route } from "react-router-dom";
-import SubNavbar from "./components/SubNavbar";
-import Watchlist from "./components/Watchlist";
-import Options from "./components/Options";
-import Futures from "./components/Futures";
-import Straddle from "./components/Straddle";
-import Trackers from "./components/Trackers";
+import SubNavbar from "../components/SubNavbar";
+import Watchlist from "../components/Watchlist";
+import Options from "../components/Options";
+import Futures from "../components/Futures";
+import Straddle from "../components/Straddle";
+import Trackers from "../components/Trackers";
 import Analytics from "../components/Analytics";
 import { useContext } from "react";
 import MyContext from "../Context/MyContext";
@@ -25,7 +25,7 @@ export default function Markets() {
           <Route path="/futures" element={<Futures mode={mode}/>} />
           <Route path="/straddle" element={<Straddle mode={mode} />} />
           <Route path="/trackers" element={<Trackers mode={mode} />} />
-          <Route path="/analytics" element={<Analytics />} />
+          <Route path="/analytics" element={<Analytics mode= {mode}/>} />
         </Routes>
       </div>
     </div>

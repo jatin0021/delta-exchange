@@ -26,7 +26,7 @@ const SubNavbar = ({ mode }) => {
     <div className={`w-full ${containerClasses}`}>
       <div className="flex justify-between items-center px-6 py-1">
         {/* Left side: navigation links */}
-        <div className="flex space-x-8 space-y-6 text-sm font-medium flex-wrap">
+        <div className="flex space-x-8 text-sm font-medium items-center">
           {links.map((link) => (
             <NavLink
               key={link.name}
