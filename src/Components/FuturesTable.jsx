@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import { FiArrowUpRight, FiArrowDownRight } from "react-icons/fi";
 
 export default function FuturesTable() {
@@ -46,6 +47,8 @@ export default function FuturesTable() {
     },
   ]);
 
+  const navigate = useNavigate();
+
   // helper for change color
   const isPositive = (change) => change.startsWith("+");
 
@@ -71,7 +74,11 @@ export default function FuturesTable() {
           {data.map((item, idx) => (
             <tr
               key={idx}
-              className="border-b border-gray-800 hover:bg-[#1a1a1b] transition"
+              onClick={() => navigate('/chart/', { state: { symbol: item.contract } })}
+              onKeyDown={(e) => { if (e.key === 'Enter') navigate('/chart/', { state: { symbol: item.contract } }); }}
+              tabIndex={0}
+              role="button"
+              className="border-b border-gray-800 hover:bg-[#1a1a1b] transition cursor-pointer"
             >
               <td className="px-4 py-3 font-semibold text-white">
                 {item.contract}

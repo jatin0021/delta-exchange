@@ -1,4 +1,5 @@
 import React from "react";
+import { useNavigate } from "react-router-dom";
 import { FaStar } from "react-icons/fa";
 
 const trackersData = [
@@ -16,6 +17,7 @@ const trackersData = [
 
 const Trackers = ({ mode }) => {
   const isDark = mode === "dark";
+  const navigate = useNavigate();
 
   return (
     <div
@@ -52,7 +54,11 @@ const Trackers = ({ mode }) => {
             {trackersData.map((item, index) => (
               <tr
                 key={index}
-                className={`border-t transition-colors duration-300 ${
+                onClick={() => navigate('/chart/', { state: { symbol: item.contract } })}
+                onKeyDown={(e) => { if (e.key === 'Enter') navigate('/chart/', { state: { symbol: item.contract } }); }}
+                tabIndex={0}
+                role="button"
+                className={`border-t transition-colors duration-300 cursor-pointer ${
                   isDark
                     ? "border-gray-700 hover:bg-[#1f2128]"
                     : "border-gray-100 hover:bg-gray-50"

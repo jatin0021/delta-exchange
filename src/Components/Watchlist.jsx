@@ -1,8 +1,10 @@
 import React from "react";
+import { useNavigate } from "react-router-dom";
 import { FiSearch } from "react-icons/fi";
 
 const Watchlist = ({ mode }) => {
   const isDark = mode === "dark";
+  const navigate = useNavigate();
 
   const containerClasses = isDark
     ? "bg-[#15161B] text-white border-gray-700"
@@ -63,9 +65,16 @@ const Watchlist = ({ mode }) => {
                   </div>
                 </td>
               </tr>
-            ) : (
+              ) : (
               data.map((item, i) => (
-                <tr key={i} className="border-b border-gray-700">
+                <tr
+                  key={i}
+                  onClick={() => navigate('/chart/', { state: { symbol: item.contract } })}
+                  onKeyDown={(e) => { if (e.key === 'Enter') navigate('/chart/', { state: { symbol: item.contract } }); }}
+                  tabIndex={0}
+                  role="button"
+                  className="border-b border-gray-700 cursor-pointer"
+                >
                   <td className="px-4 py-2">{item.contract}</td>
                   <td className="px-4 py-2">{item.description}</td>
                   <td className="px-4 py-2">{item.lastPrice}</td>

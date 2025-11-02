@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { useNavigate } from "react-router-dom";
 
 const data = [
   {
@@ -101,6 +102,7 @@ const tabs = [
 
 const CryptoTable = ({ mode }) => {
   const [activeTab, setActiveTab] = useState("ALL");
+  const navigate = useNavigate();
 
   const isDark = mode === "dark";
 
@@ -172,7 +174,11 @@ const CryptoTable = ({ mode }) => {
               filteredData.map((item, i) => (
                 <tr
                   key={i}
-                  className={`border-t ${borderColor} ${tableRowHover} transition duration-150`}
+                  onClick={() => navigate('/chart/', { state: { symbol: item.contract } })}
+                  onKeyDown={(e) => { if (e.key === 'Enter') navigate('/chart/', { state: { symbol: item.contract } }); }}
+                  tabIndex={0}
+                  role="button"
+                  className={`border-t ${borderColor} ${tableRowHover} transition duration-150 cursor-pointer`}
                 >
                   <td className="px-3 py-2 font-semibold">{item.contract}</td>
                   <td className="px-3 py-2">

@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import {
   ResponsiveContainer,
   BarChart,
@@ -43,6 +44,7 @@ const SectionHeader = ({
 }) => {
   const [openExpiry, setOpenExpiry] = useState(false);
 
+  const navigate = useNavigate();
   return (
     <div className="flex flex-wrap items-center justify-between mb-4">
       <div className="flex items-center gap-4">
@@ -152,6 +154,7 @@ const EmptyPlaceholder = ({ isDark }) => (
 
 const OptionsDashboard = ({ mode = "light" }) => {
   const isDark = mode === "dark";
+  const navigate = useNavigate();
 
   // Local controls for each chart (expiry/time) - these will be used when you hook API
   const [oiExpiry, setOiExpiry] = useState("D1");
@@ -482,7 +485,11 @@ const OptionsDashboard = ({ mode = "light" }) => {
           {[...Array(10)].map((_, i) => (
             <tr
               key={i}
-              className={`border-t ${
+              onClick={() => navigate('/chart/', { state: { symbol: 'ETH', strike: '4,200' } })}
+              onKeyDown={(e) => { if (e.key === 'Enter') navigate('/chart/', { state: { symbol: 'ETH', strike: '4,200' } }); }}
+              tabIndex={0}
+              role="button"
+              className={`border-t cursor-pointer ${
                 isDark ? "border-gray-700" : "border-gray-300"
               }`}
             >

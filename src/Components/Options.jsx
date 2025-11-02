@@ -1,11 +1,14 @@
 import React, { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import { FiFilter, FiChevronDown } from "react-icons/fi";
 
 const Options = ({ mode }) => {
   const [activeAsset, setActiveAsset] = useState("BTC");
-  const [expiry, setExpiry] = useState("29th Oct 2025");
+  const [expiry] = useState("29th Oct 2025");
 
   const isDark = mode === "dark";
+
+  const navigate = useNavigate();
 
   const containerClasses = isDark
     ? "bg-[#15161B] text-white border-gray-700"
@@ -483,11 +486,15 @@ const Options = ({ mode }) => {
           <tbody>
             {optionsData.map((row, i) => (
               <tr
-                key={i}
-                className={`border-t ${
-                  isDark ? "border-gray-800 hover:bg-[#1E1F24]" : "border-gray-200 hover:bg-gray-50"
-                }`}
-              >
+                  key={i}
+                  onClick={() => navigate('/chart/', { state: { strike: row.strike } })}
+                  onKeyDown={(e) => { if (e.key === 'Enter') navigate('/chart/', { state: { strike: row.strike } }); }}
+                  tabIndex={0}
+                  role="button"
+                  className={`border-t ${
+                    isDark ? "border-gray-800 hover:bg-[#1E1F24]" : "border-gray-200 hover:bg-gray-50"
+                  } cursor-pointer`}
+                >
                 <td className="px-3 py-2">{row.bidQty}</td>
                 <td className="px-3 py-2 text-green-400">${row.bidPrice}</td>
                 <td className="px-3 py-2 text-red-400">${row.askPrice}</td>

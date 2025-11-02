@@ -3,12 +3,12 @@ import { NavLink } from "react-router-dom";
 
 const SubNavbar = ({ mode }) => {
   const links = [
-    { name: "Watchlist", path: "/main-dash/watchlist" },
-    { name: "Options", path: "/main-dash/options" },
-    { name: "Futures", path: "/main-dash/futures" },
-    { name: "Straddle", path: "/main-dash/straddle" },
-    { name: "Trackers", path: "/main-dash/trackers" },
-    { name: "Analytics", path: "/main-dash/analytics" },
+    { name: "Watchlist", path: "/markets/watchlist" },
+    { name: "Options", path: "/markets/options" },
+    { name: "Futures", path: "/markets/futures" },
+    { name: "Straddle", path: "/markets/straddle" },
+    { name: "Trackers", path: "/markets/trackers" },
+    { name: "Analytics", path: "/markets/analytics" },
   ];
 
   const containerClasses =

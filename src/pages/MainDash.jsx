@@ -7,7 +7,7 @@ import Straddle from "../components/Straddle";
 import Trackers from "../components/Trackers";
 import Analytics from "../components/Analytics";
 import { useContext } from "react";
-import MyContext from "../Context/MyContext";
+import MyContext from "../Context/Mycontext";
 
 export default function Markets() {
     const { mode } = useContext(MyContext);

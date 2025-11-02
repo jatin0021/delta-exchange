@@ -1,9 +1,11 @@
 "use client";
 import React from "react";
+import { useNavigate } from "react-router-dom";
 import { FaStar } from "react-icons/fa";
 
 const Straddle = ({ mode }) => {
   const isDark = mode === "dark";
+  const navigate = useNavigate();
 
   const containerClasses = isDark
     ? "bg-[#15161B] text-white border-gray-700"
@@ -13,7 +15,7 @@ const Straddle = ({ mode }) => {
     ? "bg-[#1E1F24] text-gray-300 border-b border-gray-700"
     : "bg-gray-100 text-gray-700 border-b border-gray-300";
 
-  const tableTextClasses = isDark ? "text-gray-300" : "text-gray-600";
+  
 
   // Example Data
   const data = [
@@ -119,7 +121,11 @@ const Straddle = ({ mode }) => {
               return (
                 <tr
                   key={i}
-                  className={`border-b ${
+                  onClick={() => navigate('/chart/', { state: { symbol: item.contract } })}
+                  onKeyDown={(e) => { if (e.key === 'Enter') navigate('/chart/', { state: { symbol: item.contract } }); }}
+                  tabIndex={0}
+                  role="button"
+                  className={`border-b cursor-pointer ${
                     isDark ? "border-gray-700 hover:bg-[#1E1F24]" : "border-gray-200 hover:bg-gray-100"
                   } transition`}
                 >
