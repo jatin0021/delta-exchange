@@ -1,4 +1,5 @@
 import { useState, useContext } from "react";
+import { NavLink } from "react-router-dom";
 import Mycontext from "../Context/Mycontext";
 import {
   FiSearch,
@@ -16,21 +17,38 @@ import {
 } from "react-icons/fi";
 import { BsCurrencyRupee } from "react-icons/bs";
 import { FaSun, FaMoon, FaRobot, FaDatabase } from "react-icons/fa";
+import { RiArrowDropDownLine } from "react-icons/ri";
 
 export default function Navbar() {
   const [isOpen, setIsOpen] = useState(false);
   const [showAlgoDropdown, setShowAlgoDropdown] = useState(false);
   const [showMoreDropdown, setShowMoreDropdown] = useState(false);
   const { mode, toggleMode } = useContext(Mycontext);
+  
+  const handleDropdownEnter = (type) => {
+    if (type === "AlgoHub") setShowAlgoDropdown(true);
+    if (type === "More") setShowMoreDropdown(true);
+  };
+
+  const handleDropdownLeave = (type, event) => {
+    // Check if the mouse is moving to the dropdown content
+    const dropdownContent = event.relatedTarget;
+    const isMovingToDropdown = dropdownContent?.closest('.dropdown-content');
+    
+    if (!isMovingToDropdown) {
+      if (type === "AlgoHub") setShowAlgoDropdown(false);
+      if (type === "More") setShowMoreDropdown(false);
+    }
+  };
 
   const menuItems = [
-    "Markets",
-    "Futures",
-    "Options",
-    "Straddle",
-    "Trackers",
-    "AlgoHub",
-    "More",
+    { label: "Markets", to: "/markets/" },
+    { label: "Futures", to: "/markets/futures" },
+    { label: "Options", to: "/markets/options" },
+    { label: "Straddle", to: "/markets/straddle" },
+    { label: "Trackers", to: "/markets/trackers" },
+    { label: "AlgoHub", to: "/algohub/", hasDropdown: true },
+    { label: "More", to: "/more/", hasDropdown: true },
   ];
 
   const algoDropdownItems = [
@@ -106,7 +124,7 @@ export default function Navbar() {
         {/* Left Section */}
         <div className="flex items-center gap-8">
           {/* Logo */}
-          <div className="flex items-center gap-1">
+          <NavLink to="/" className="flex items-center gap-1">
             <div className="w-5 h-5 bg-gradient-to-tr from-green-500 to-orange-500 rounded-sm" />
             <div className="font-semibold text-sm">Delta.</div>
             <span
@@ -116,25 +134,35 @@ export default function Navbar() {
             >
               Exchange | INDIA
             </span>
-          </div>
+          </NavLink>
 
           {/* Desktop Menu */}
           <div className="hidden lg:flex items-center gap-5 relative">
             {menuItems.map((item, idx) => (
               <div
                 key={idx}
-                className="relative cursor-pointer hover:text-orange-400 text-sm"
-                onMouseEnter={() => {
-                  if (item === "AlgoHub") setShowAlgoDropdown(true);
-                  if (item === "More") setShowMoreDropdown(true);
-                }}
-                onMouseLeave={() => {
-                  if (item === "AlgoHub") setShowAlgoDropdown(false);
-                  if (item === "More") setShowMoreDropdown(false);
-                }}
+                className="relative text-sm"
+                onMouseEnter={() => handleDropdownEnter(item.label)}
+                onMouseLeave={(e) => handleDropdownLeave(item.label, e)}
               >
-                {item}
-                {item === "AlgoHub" && (
+                <div className="flex items-center">
+                  <NavLink
+                    to={item.to}
+                    className={({ isActive }) =>
+                      `cursor-pointer hover:text-orange-400 ${isActive ? 'text-orange-500 font-semibold' : ''} flex items-center`
+                    }
+                  >
+                    {item.label}
+                    {item.hasDropdown && (
+                      <RiArrowDropDownLine className={`text-xl transition-transform ${
+                        (item.label === "AlgoHub" && showAlgoDropdown) || 
+                        (item.label === "More" && showMoreDropdown) ? "rotate-180" : ""
+                      }`} />
+                    )}
+                  </NavLink>
+                </div>
+
+                {item.label === "AlgoHub" && (
                   <>
                     <span className="absolute -top-2 right-[-18px] text-[10px] bg-yellow-500 text-black font-semibold px-1 rounded">
                       New
@@ -143,31 +171,31 @@ export default function Navbar() {
                     {/* AlgoHub Dropdown */}
                     {showAlgoDropdown && (
                       <div
-                        className={`absolute top-6 left-0 w-64 mt-2 p-3 rounded-lg shadow-lg z-50 ${
-                          mode === "dark" ? "bg-[#1E1F24]" : "bg-white"
+                        className={`dropdown-content absolute top-8 -left-4 w-64 p-3 rounded-lg shadow-lg z-50 border ${
+                          mode === "dark" ? "bg-[#1E1F24] border-gray-700" : "bg-white border-gray-200"
                         }`}
+                        onMouseLeave={() => setShowAlgoDropdown(false)}
                       >
                         {algoDropdownItems.map((d, i) => (
-                          <div
-                            key={i}
-                            className={`flex items-start gap-3 px-3 py-2 rounded-md cursor-pointer hover:bg-[#2A2B30] transition ${
-                              mode === "dark" ? "text-gray-200" : "text-gray-700"
-                            }`}
-                          >
-                            {d.icon}
-                            <div>
-                              <p className="text-sm font-medium">{d.title}</p>
-                              <p
-                                className={`text-xs ${
-                                  mode === "dark"
-                                    ? "text-gray-400"
-                                    : "text-gray-500"
-                                }`}
-                              >
-                                {d.desc}
-                              </p>
+                          <NavLink key={i} to={`/algohub/${d.title.toLowerCase().replace(/\s+/g, '-')}` }>
+                            <div
+                              className={`flex items-start gap-3 px-3 py-2 rounded-md cursor-pointer hover:bg-[#2A2B30] transition ${
+                                mode === "dark" ? "text-gray-200" : "text-gray-700"
+                              }`}
+                            >
+                              {d.icon}
+                              <div>
+                                <p className="text-sm font-medium">{d.title}</p>
+                                <p
+                                  className={`text-xs ${
+                                    mode === "dark" ? "text-gray-400" : "text-gray-500"
+                                  }`}
+                                >
+                                  {d.desc}
+                                </p>
+                              </div>
                             </div>
-                          </div>
+                          </NavLink>
                         ))}
                       </div>
                     )}
@@ -175,46 +203,42 @@ export default function Navbar() {
                 )}
 
                 {/* More Dropdown */}
-                {item === "More" && showMoreDropdown && (
+                {item.label === "More" && showMoreDropdown && (
                   <div
-                    className={`absolute top-6 left-0 w-72 mt-2 p-3 rounded-lg shadow-lg z-50 ${
-                      mode === "dark" ? "bg-[#1E1F24]" : "bg-white"
+                    className={`dropdown-content absolute top-8 -left-4 w-72 p-3 rounded-lg shadow-lg z-50 border ${
+                      mode === "dark" ? "bg-[#1E1F24] border-gray-700" : "bg-white border-gray-200"
                     }`}
+                    onMouseLeave={() => setShowMoreDropdown(false)}
                   >
                     {moreDropdownItems.map((section, sIdx) => (
                       <div key={sIdx} className="mb-3 last:mb-0">
                         <p
                           className={`text-xs font-semibold mb-1 ${
-                            mode === "dark"
-                              ? "text-gray-400"
-                              : "text-gray-500"
+                            mode === "dark" ? "text-gray-400" : "text-gray-500"
                           }`}
                         >
                           {section.section}
                         </p>
                         {section.items.map((d, i) => (
-                          <div
-                            key={i}
-                            className={`flex items-start gap-3 px-3 py-2 rounded-md cursor-pointer hover:bg-[#2A2B30] transition ${
-                              mode === "dark"
-                                ? "text-gray-200"
-                                : "text-gray-700"
-                            }`}
-                          >
-                            {d.icon}
-                            <div>
-                              <p className="text-sm font-medium">{d.title}</p>
-                              <p
-                                className={`text-xs ${
-                                  mode === "dark"
-                                    ? "text-gray-400"
-                                    : "text-gray-500"
-                                }`}
-                              >
-                                {d.desc}
-                              </p>
+                          <NavLink key={i} to={`/more/${d.title.toLowerCase().replace(/\s+/g, '-')}` }>
+                            <div
+                              className={`flex items-start gap-3 px-3 py-2 rounded-md cursor-pointer hover:bg-[#2A2B30] transition ${
+                                mode === "dark" ? "text-gray-200" : "text-gray-700"
+                              }`}
+                            >
+                              {d.icon}
+                              <div>
+                                <p className="text-sm font-medium">{d.title}</p>
+                                <p
+                                  className={`text-xs ${
+                                    mode === "dark" ? "text-gray-400" : "text-gray-500"
+                                  }`}
+                                >
+                                  {d.desc}
+                                </p>
+                              </div>
                             </div>
-                          </div>
+                          </NavLink>
                         ))}
                       </div>
                     ))}
@@ -329,9 +353,14 @@ export default function Navbar() {
           }`}
         >
           {menuItems.map((item, idx) => (
-            <div key={idx} className="text-sm cursor-pointer hover:text-orange-400">
-              {item}
-            </div>
+            <NavLink
+              key={idx}
+              to={item.to}
+              className="text-sm cursor-pointer hover:text-orange-400"
+              onClick={() => setIsOpen(false)}
+            >
+              {item.label}
+            </NavLink>
           ))}
           <div
             className={`flex items-center px-3 py-1.5 rounded-md mt-2 ${

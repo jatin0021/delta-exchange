@@ -10,6 +10,7 @@ import PromoCarousel from "./Components/PromoCarousel";
 import { useContext } from "react";
 import { useLocation } from "react-router-dom";
 import MyContext from "./Context/Mycontext";
+import Home from "./pages/Home Page/Home";
 
 function App() {
   return (
@@ -22,13 +23,14 @@ function App() {
 function AppContent() {
   const { mode } = useContext(MyContext);
   const location = useLocation();
-  const isChartPage = location.pathname.startsWith("/chart");
+  const isMarketsPage = location.pathname.startsWith("/markets");
 
   return (
     <>
       <Navbar />
-      {!isChartPage && <PromoCarousel />}
+  {isMarketsPage && <PromoCarousel />}
       <Routes>
+        <Route path="/" element={<Home />} />
         <Route path="/markets/*" element={<MainDash />} />
         <Route path="/chart/" element={<Chart  mode={mode}/>} />
         {/* <Route path="/login/" element={<Login  mode={mode}/>} /> */}
