@@ -171,7 +171,7 @@ export default function Navbar() {
                     {/* AlgoHub Dropdown */}
                     {showAlgoDropdown && (
                       <div
-                        className={`dropdown-content absolute top-8 -left-4 w-64 p-3 rounded-lg shadow-lg z-50 border ${
+                        className={`dropdown-content absolute top-5 -left-4 w-64 p-3 rounded-lg shadow-lg z-50 border ${
                           mode === "dark" ? "bg-[#1E1F24] border-gray-700" : "bg-white border-gray-200"
                         }`}
                         onMouseLeave={() => setShowAlgoDropdown(false)}
@@ -205,7 +205,7 @@ export default function Navbar() {
                 {/* More Dropdown */}
                 {item.label === "More" && showMoreDropdown && (
                   <div
-                    className={`dropdown-content absolute top-8 -left-4 w-72 p-3 rounded-lg shadow-lg z-50 border ${
+                    className={`dropdown-content absolute top-5 -left-4 w-72 p-3 rounded-lg shadow-lg z-50 border ${
                       mode === "dark" ? "bg-[#1E1F24] border-gray-700" : "bg-white border-gray-200"
                     }`}
                     onMouseLeave={() => setShowMoreDropdown(false)}

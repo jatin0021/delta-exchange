@@ -1,8 +1,13 @@
 import React from "react";
 import { FaGooglePlay, FaApple, FaAndroid } from "react-icons/fa";
 import Markets from "../MainDash";
+import { useNavigate } from "react-router-dom";
 
 const HeroSection = ({ mode }) => {
+  const navigate = useNavigate();
+  const onTradeClick = () => {
+    navigate("/markets");
+  }
   const isDark = mode === "dark";
   const bgColor = isDark ? "bg-[#0E0F13]" : "bg-gray-50";
   const textColor = isDark ? "text-white" : "text-gray-900";
@@ -34,7 +39,7 @@ const HeroSection = ({ mode }) => {
           </p>
 
           {/* CTA Button */}
-          <button onClick={<Markets />} className="bg-orange-500 hover:bg-orange-600 transition-colors text-white font-semibold px-20 cursor-pointer py-3 rounded-md text-lg mb-8">
+          <button onClick={onTradeClick} className="bg-orange-500 hover:bg-orange-600 transition-colors text-white font-semibold px-20 cursor-pointer py-3 rounded-md text-lg mb-8">
             Trade
           </button>
 

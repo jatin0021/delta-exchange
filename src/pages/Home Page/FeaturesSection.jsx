@@ -1,10 +1,15 @@
 import React from "react";
 import { FaCheckCircle, FaStar } from "react-icons/fa";
+import { useNavigate } from "react-router-dom";
 
 const FeaturesSection = ({ mode }) => {
   const isDark = mode === "dark";
   const bgColor = isDark ? "bg-[#0E0F13]" : "bg-gray-50";
   const textColor = isDark ? "text-white" : "text-gray-900";
+  const navigate = useNavigate();
+  const onCryptoVsEquityClick = () => {
+    navigate("/cryptovsequity"); 
+  }
 
   return (
     <section className={`${bgColor} ${textColor} pb-10 px-6 transition-colors duration-300`}>
@@ -63,7 +68,7 @@ const FeaturesSection = ({ mode }) => {
 
           {/* Right Button */}
           <div className="flex justify-start md:justify-end w-full md:w-auto">
-            <button className={`${isDark ? 'bg-[#1C1F26] border-gray-700 text-gray-200' : 'bg-gray-100 border-gray-300 text-gray-700'} border rounded-lg px-2 text-medium flex items-center gap-1 hover:bg-opacity-80 transition`}>
+            <button onClick={onCryptoVsEquityClick} className={`${isDark ? 'bg-[#1C1F26] border-gray-700 text-gray-200' : 'bg-gray-100 border-gray-300 text-gray-700'} border cursor-pointer rounded-lg px-2 text-medium flex items-center gap-1 hover:bg-opacity-80 transition`}>
               <span role="img" aria-label="bulb">
                 💡
               </span>{" "}
