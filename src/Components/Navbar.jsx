@@ -1,6 +1,7 @@
 import { useState, useContext } from "react";
 import { NavLink } from "react-router-dom";
 import Mycontext from "../Context/Mycontext";
+import { DeltaLogo } from "./DeltaLogo";
 import {
   FiSearch,
   FiBell,
@@ -120,24 +121,16 @@ export default function Navbar() {
           : "bg-white text-black border-gray-300"
       } border-b w-full transition-colors duration-300`}
     >
-      <div className="max-w-[1440px] mx-auto px-3 md:px-6 flex items-center justify-between h-14 relative">
+      <div className="max-w-full px-3 flex items-center justify-between h-12 relative">
         {/* Left Section */}
         <div className="flex items-center gap-8">
           {/* Logo */}
-          <NavLink to="/" className="flex items-center gap-1">
-            <div className="w-5 h-5 bg-gradient-to-tr from-green-500 to-orange-500 rounded-sm" />
-            <div className="font-semibold text-sm">Delta.</div>
-            <span
-              className={`text-sm ${
-                mode === "dark" ? "text-gray-400" : "text-gray-500"
-              }`}
-            >
-              Exchange | INDIA
-            </span>
+          <NavLink to="/" className="flex items-center">
+            <DeltaLogo className="h-8" />
           </NavLink>
 
           {/* Desktop Menu */}
-          <div className="hidden lg:flex items-center gap-5 relative">
+          <div className="hidden lg:flex items-center gap-10 relative">
             {menuItems.map((item, idx) => (
               <div
                 key={idx}
@@ -149,7 +142,7 @@ export default function Navbar() {
                   <NavLink
                     to={item.to}
                     className={({ isActive }) =>
-                      `cursor-pointer hover:text-orange-400 ${isActive ? 'text-orange-500 font-semibold' : ''} flex items-center`
+                      `cursor-pointer hover:text-orange-400 ${isActive ? 'text-orange-500 font-bold' : 'font-semibold'} flex items-center`
                     }
                   >
                     {item.label}

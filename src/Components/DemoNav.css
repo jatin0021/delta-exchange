@@ -1,0 +1,55 @@
+.demo-nav-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+  padding: 20px;
+  background: linear-gradient(135deg, #0a0e17 0%, #141922 100%);
+}
+
+.demo-nav-card {
+  background: var(--main-bg-surface, #141922);
+  border: 1px solid var(--divider-primary, rgba(255, 255, 255, 0.1));
+  border-radius: 16px;
+  padding: 48px;
+  text-align: center;
+  max-width: 500px;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+}
+
+.demo-nav-card h2 {
+  font-size: 28px;
+  font-weight: 700;
+  color: var(--main-text-primary, #ffffff);
+  margin-bottom: 16px;
+}
+
+.demo-nav-card p {
+  font-size: 16px;
+  color: var(--main-text-secondary, #a0a0a0);
+  margin-bottom: 32px;
+  line-height: 1.6;
+}
+
+.demo-nav-button {
+  display: inline-block;
+  padding: 14px 32px;
+  background: linear-gradient(135deg, #2894F9 0%, #1e7ad8 100%);
+  color: white;
+  text-decoration: none;
+  border-radius: 8px;
+  font-weight: 600;
+  font-size: 16px;
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 12px rgba(40, 148, 249, 0.3);
+}
+
+.demo-nav-button:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(40, 148, 249, 0.4);
+  background: linear-gradient(135deg, #3aa3ff 0%, #2894F9 100%);
+}
+
+.demo-nav-button:active {
+  transform: translateY(0);
+}
