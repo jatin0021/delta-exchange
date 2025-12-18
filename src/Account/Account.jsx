@@ -1,4 +1,5 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
+import { useLocation } from "react-router-dom";
 
 // SVG Icon Components
 const PositionsIcon = () => (
@@ -108,8 +109,15 @@ const menuItems = [
 ];
 
 const DashboardLayout = ({ mode, defaultActiveSection = "Trading Bot" }) => {
-  const [activeItem, setActiveItem] = useState(defaultActiveSection);
+  const location = useLocation();
+  const [activeItem, setActiveItem] = useState(location.state?.activeSection || defaultActiveSection);
   const [isCollapsed, setIsCollapsed] = useState(false);
+
+  useEffect(() => {
+    if (location.state?.activeSection) {
+      setActiveItem(location.state.activeSection);
+    }
+  }, [location.state]);
 
   // 🧠 Dynamically load the selected component
   const renderContent = () => {

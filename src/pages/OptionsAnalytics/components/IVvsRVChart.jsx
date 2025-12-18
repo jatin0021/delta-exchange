@@ -1,27 +1,25 @@
-import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer } from 'recharts';
+import { AreaChart, Area, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer } from 'recharts';
 import PropTypes from 'prop-types';
-import { useState } from 'react';
+import { useMemo } from 'react';
 
-// Generate sample data for IV vs RV
+// Generate more realistic sample data for IV vs RV
 const generateIVRVData = () => {
   const data = [];
-  const days = 7;
+  const days = 14;
   const now = new Date();
   
   for (let i = days; i >= 0; i--) {
     const date = new Date(now);
     date.setDate(date.getDate() - i);
     
-    // Generate realistic volatility values
-    const baseIV = 55 + Math.random() * 10;
-    const baseRV = 45 + Math.random() * 8;
+    const dayFactor = i / days;
+    const baseIV = 60 + Math.sin(dayFactor * Math.PI * 2) * 5 + Math.random() * 5;
+    const baseRV = 50 + Math.cos(dayFactor * Math.PI * 2) * 4 + Math.random() * 5;
     
     data.push({
       date: date.toLocaleDateString('en-US', { month: 'short', day: 'numeric' }),
-      timestamp: date.getTime(),
       iv: baseIV,
       rv: baseRV,
-      ivRvSpread: baseIV - baseRV
     });
   }
   
@@ -35,19 +33,23 @@ const CustomTooltip = ({ active, payload, label }) => {
     const spread = iv - rv;
     
     return (
-      <div className="chart-tooltip">
-        <div className="tooltip-label">{label}</div>
-        <div className="tooltip-item">
-          <span className="tooltip-name" style={{ color: '#2894F9' }}>● IV (Implied Volatility):</span>
-          <span className="tooltip-value">{iv.toFixed(2)}%</span>
+      <div className="bg-[rgba(13,17,23,0.95)] backdrop-blur-[4px] border border-[var(--divider-primary)] rounded-lg p-[10px] min-w-[150px] shadow-[0_4px_12px_rgba(0,0,0,0.5)]">
+        <div className="text-xs font-bold text-[var(--main-text-primary)] mb-2 pb-1 border-b border-[var(--divider-primary)]">{label}</div>
+        <div className="flex justify-between items-center gap-5 text-[11px] mb-1">
+          <span className="text-[var(--main-text-secondary)]">
+             <span style={{ color: 'var(--primary-color)' }}>●</span> IV (Implied)
+          </span>
+          <span className="font-bold tabular-nums text-[var(--primary-color)]">{iv.toFixed(2)}%</span>
         </div>
-        <div className="tooltip-item">
-          <span className="tooltip-name" style={{ color: '#F8B83A' }}>● RV (Realized Volatility):</span>
-          <span className="tooltip-value">{rv.toFixed(2)}%</span>
+        <div className="flex justify-between items-center gap-5 text-[11px] mb-1">
+          <span className="text-[var(--main-text-secondary)]">
+            <span style={{ color: 'var(--warning)' }}>●</span> RV (Realized)
+          </span>
+          <span className="font-bold tabular-nums text-[var(--warning)]">{rv.toFixed(2)}%</span>
         </div>
-        <div className="tooltip-item" style={{ marginTop: '8px', paddingTop: '8px', borderTop: '1px solid rgba(255,255,255,0.1)' }}>
-          <span className="tooltip-name">IV-RV Spread:</span>
-          <span className="tooltip-value" style={{ color: spread > 0 ? '#00c087' : '#ff5252' }}>
+        <div className="flex justify-between items-center gap-5 text-[11px] mt-2 pt-2 border-t border-[var(--divider-primary)]">
+          <span className="text-[var(--main-text-secondary)]">Spread</span>
+          <span className="font-bold tabular-nums" style={{ color: spread > 0 ? 'var(--positive)' : 'var(--negative)' }}>
             {spread > 0 ? '+' : ''}{spread.toFixed(2)}%
           </span>
         </div>
@@ -63,91 +65,70 @@ CustomTooltip.propTypes = {
   label: PropTypes.string
 };
 
-const IVvsRVChart = ({ crypto }) => {
-  const [data] = useState(generateIVRVData());
+const IVvsRVChart = () => {
+  const data = useMemo(() => generateIVRVData(), []);
 
   return (
-    <div className="chart-container" style={{ height: '330px' }}>
+    <div className="w-full h-[250px]">
       <ResponsiveContainer width="100%" height="100%">
-        <LineChart
+        <AreaChart
           data={data}
-          margin={{ top: 20, right: 30, left: 20, bottom: 60 }}
+          margin={{ top: 10, right: 30, left: 20, bottom: 20 }}
         >
-          <CartesianGrid strokeDasharray="3 3" stroke="rgba(255,255,255,0.05)" />
+          <defs>
+            <linearGradient id="ivGradient" x1="0" y1="0" x2="0" y2="1">
+              <stop offset="0%" stopColor="var(--primary-color)" stopOpacity={0.2}/>
+              <stop offset="100%" stopColor="var(--primary-color)" stopOpacity={0}/>
+            </linearGradient>
+            <linearGradient id="rvGradient" x1="0" y1="0" x2="0" y2="1">
+              <stop offset="0%" stopColor="var(--warning)" stopOpacity={0.2}/>
+              <stop offset="100%" stopColor="var(--warning)" stopOpacity={0}/>
+            </linearGradient>
+          </defs>
+          <CartesianGrid 
+            strokeDasharray="none" 
+            vertical={false} 
+            stroke="var(--divider-primary)" 
+          />
           <XAxis 
             dataKey="date" 
-            stroke="#a0a0a0"
-            tick={{ fill: '#a0a0a0', fontSize: 11 }}
-            angle={-45}
-            textAnchor="end"
-            height={60}
+            stroke="var(--main-text-muted)"
+            tick={{ fill: 'var(--main-text-secondary)', fontSize: 10, fontWeight: 500 }}
+            axisLine={false}
+            tickLine={false}
+            dy={10}
           />
           <YAxis 
-            stroke="#a0a0a0"
-            tick={{ fill: '#a0a0a0', fontSize: 11 }}
-            domain={[0, 100]}
+            stroke="var(--main-text-muted)"
+            tick={{ fill: 'var(--main-text-secondary)', fontSize: 10, fontWeight: 500 }}
+            axisLine={false}
+            tickLine={false}
+            dx={-10}
+            domain={['auto', 'auto']}
             tickFormatter={(value) => `${value}%`}
-            label={{ 
-              value: 'ATM Volatility(%)', 
-              angle: -90, 
-              position: 'insideLeft',
-              style: { fill: '#ffffff', fontSize: 12 }
-            }}
           />
           <Tooltip content={<CustomTooltip />} />
-          <Legend 
-            wrapperStyle={{ paddingTop: '20px' }}
-            content={() => (
-              <div className="legend-container">
-                <div className="legend-item">
-                  <div style={{ 
-                    width: '20px', 
-                    height: '2px', 
-                    background: '#2894F9',
-                    borderRadius: '1px'
-                  }}></div>
-                  <span>IV (Implied Volatility)</span>
-                </div>
-                <div className="legend-item">
-                  <div style={{ 
-                    width: '20px', 
-                    height: '2px', 
-                    background: '#F8B83A',
-                    borderRadius: '1px'
-                  }}></div>
-                  <span>RV (Realized Volatility)</span>
-                </div>
-              </div>
-            )}
-          />
           
-          <Line 
+          <Area 
             type="monotone" 
             dataKey="iv" 
-            stroke="#2894F9" 
-            strokeWidth={2.5}
-            dot={{ fill: '#2894F9', r: 4 }}
-            activeDot={{ r: 6, fill: '#2894F9', stroke: '#fff', strokeWidth: 2 }}
-            name="IV"
+            stroke="var(--primary-color)" 
+            strokeWidth={2}
+            fill="url(#ivGradient)"
+            activeDot={{ r: 4, fill: 'var(--primary-color)', stroke: '#fff', strokeWidth: 2 }}
           />
-          <Line 
+          <Area 
             type="monotone" 
             dataKey="rv" 
-            stroke="#F8B83A" 
-            strokeWidth={2.5}
-            dot={{ fill: '#F8B83A', r: 4 }}
-            activeDot={{ r: 6, fill: '#F8B83A', stroke: '#fff', strokeWidth: 2 }}
-            name="RV"
+            stroke="var(--warning)" 
+            strokeWidth={2}
+            fill="url(#rvGradient)"
+            activeDot={{ r: 4, fill: 'var(--warning)', stroke: '#fff', strokeWidth: 2 }}
           />
-        </LineChart>
+        </AreaChart>
       </ResponsiveContainer>
     </div>
   );
-};
-
-IVvsRVChart.propTypes = {
-  crypto: PropTypes.string.isRequired,
-  timeframe: PropTypes.string
 };
 
 export default IVvsRVChart;

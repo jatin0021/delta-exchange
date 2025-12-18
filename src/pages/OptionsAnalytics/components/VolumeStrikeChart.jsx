@@ -1,26 +1,27 @@
-import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer, ReferenceLine } from 'recharts';
+import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, ReferenceLine } from 'recharts';
 import PropTypes from 'prop-types';
-import { useState } from 'react';
+import { useMemo } from 'react';
 
-// Generate sample data for Volume vs Strike
+// Generate more realistic sample data for Volume vs Strike
 const generateVolumeData = () => {
   const data = [];
   const currentPrice = 86410.6;
   const strikeStep = 400;
   
-  for (let i = -20; i <= 22; i++) {
-    const strike = currentPrice + (i * strikeStep);
+  for (let i = -15; i <= 15; i++) {
+    const strike = Math.round((currentPrice + (i * strikeStep)) / 100) * 100;
     const distanceFromATM = Math.abs(i);
     
-    // Generate realistic volume values - higher near ATM
-    const callsVolume = Math.max(0, (20 - distanceFromATM * 0.7) * Math.random() * 5000000);
-    const putsVolume = Math.max(0, (20 - distanceFromATM * 0.7) * Math.random() * 5000000);
+    const baseValue = Math.exp(-Math.pow(distanceFromATM / 6, 2)) * 10000000;
+    
+    const callsVolume = Math.max(0, baseValue * (0.4 + Math.random()));
+    const putsVolume = Math.max(0, baseValue * (0.4 + Math.random()));
     
     data.push({
       strike: strike,
       calls: callsVolume,
-      puts: -putsVolume, // Negative for visual separation
-      isATM: Math.abs(strike - currentPrice) < strikeStep
+      puts: putsVolume,
+      isATM: distanceFromATM === 0
     });
   }
   
@@ -30,24 +31,32 @@ const generateVolumeData = () => {
 const CustomTooltip = ({ active, payload, label }) => {
   if (active && payload && payload.length) {
     const calls = payload.find(p => p.dataKey === 'calls')?.value || 0;
-    const puts = Math.abs(payload.find(p => p.dataKey === 'puts')?.value || 0);
+    const puts = payload.find(p => p.dataKey === 'puts')?.value || 0;
     
+    const formatCurrency = (val) => {
+      if (val >= 1000000) return `$${(val / 1000000).toFixed(2)}M`;
+      if (val >= 1000) return `$${(val / 1000).toFixed(2)}K`;
+      return `$${val.toFixed(2)}`;
+    };
+
     return (
-      <div className="chart-tooltip">
-        <div className="tooltip-label">At Strike: ${label.toLocaleString()}</div>
-        <div className="tooltip-item">
-          <span className="tooltip-name" style={{ color: '#00c087' }}>● Calls:</span>
-          <span className="tooltip-value">${(calls / 1000000).toFixed(2)}M</span>
+      <div className="bg-[rgba(13,17,23,0.95)] backdrop-blur-[4px] border border-[var(--divider-primary)] rounded-lg p-[10px] min-w-[150px] shadow-[0_4px_12px_rgba(0,0,0,0.5)]">
+        <div className="text-xs font-bold text-[var(--main-text-primary)] mb-2 pb-1 border-b border-[var(--divider-primary)]">Strike: ${label.toLocaleString()}</div>
+        <div className="flex justify-between items-center gap-5 text-[11px] mb-1">
+          <span className="text-[var(--main-text-secondary)] flex items-center gap-2">
+            <span style={{ color: 'var(--positive)' }}>●</span> Calls Volume
+          </span>
+          <span className="font-bold tabular-nums text-[var(--positive)]">
+            {formatCurrency(calls)}
+          </span>
         </div>
-        <div className="tooltip-item">
-          <span className="tooltip-name" style={{ color: '#ff5252' }}>● Puts:</span>
-          <span className="tooltip-value">${(puts / 1000000).toFixed(2)}M</span>
-        </div>
-        <div className="tooltip-item" style={{ marginTop: '8px', paddingTop: '8px', borderTop: '1px solid rgba(255,255,255,0.1)' }}>
-          <span className="tooltip-name">P-BTC-85000-181225</span>
-        </div>
-        <div className="tooltip-item">
-          <span className="tooltip-value" style={{ color: '#F8B83A' }}>($187.24)</span>
+        <div className="flex justify-between items-center gap-5 text-[11px] mb-1">
+          <span className="text-[var(--main-text-secondary)] flex items-center gap-2">
+            <span style={{ color: 'var(--negative)' }}>●</span> Puts Volume
+          </span>
+          <span className="font-bold tabular-nums text-[var(--negative)]">
+            {formatCurrency(puts)}
+          </span>
         </div>
       </div>
     );
@@ -62,79 +71,67 @@ CustomTooltip.propTypes = {
 };
 
 const VolumeStrikeChart = ({ crypto }) => {
-  const [data] = useState(generateVolumeData());
+  const data = useMemo(() => generateVolumeData(), []);
   const currentPrice = 86410.6;
 
   return (
-    <div className="chart-container">
+    <div className="w-full h-[250px]">
       <ResponsiveContainer width="100%" height="100%">
         <BarChart
           data={data}
-          margin={{ top: 20, right: 30, left: 20, bottom: 80 }}
+          margin={{ top: 20, right: 30, left: 20, bottom: 20 }}
+          barGap={2}
         >
-          <CartesianGrid strokeDasharray="3 3" stroke="rgba(255,255,255,0.05)" />
+          <CartesianGrid 
+            strokeDasharray="none" 
+            vertical={false} 
+            stroke="var(--divider-primary)" 
+          />
           <XAxis 
             dataKey="strike" 
-            stroke="#a0a0a0"
-            tick={{ fill: '#a0a0a0', fontSize: 11 }}
-            angle={-45}
-            textAnchor="end"
-            height={80}
+            stroke="var(--main-text-muted)"
+            tick={{ fill: 'var(--main-text-secondary)', fontSize: 10, fontWeight: 500 }}
+            axisLine={false}
+            tickLine={false}
+            dy={10}
             tickFormatter={(value) => value.toLocaleString()}
           />
           <YAxis 
-            stroke="#a0a0a0"
-            tick={{ fill: '#a0a0a0', fontSize: 11 }}
+            stroke="var(--main-text-muted)"
+            tick={{ fill: 'var(--main-text-secondary)', fontSize: 10, fontWeight: 500 }}
+            axisLine={false}
+            tickLine={false}
+            dx={-10}
             tickFormatter={(value) => {
-              const absValue = Math.abs(value);
-              if (absValue >= 1000000) return `${(absValue / 1000000).toFixed(0)}M`;
-              if (absValue >= 1000) return `${(absValue / 1000).toFixed(0)}K`;
-              return absValue.toFixed(0);
-            }}
-            label={{ 
-              value: 'Volume($)', 
-              angle: -90, 
-              position: 'insideLeft',
-              style: { fill: '#ffffff', fontSize: 12 }
+              if (value === 0) return '0';
+              if (value >= 1000000) return `${(value / 1000000).toFixed(0)}M`;
+              if (value >= 1000) return `${(value / 1000).toFixed(0)}K`;
+              return value;
             }}
           />
-          <Tooltip content={<CustomTooltip />} cursor={{ fill: 'rgba(255,255,255,0.05)' }} />
-          <Legend 
-            wrapperStyle={{ paddingTop: '20px' }}
-            content={() => (
-              <div className="legend-container">
-                <div className="legend-item">
-                  <div className="legend-circle calls"></div>
-                  <span>Calls</span>
-                </div>
-                <div className="legend-item">
-                  <div className="legend-circle puts"></div>
-                  <span>Puts</span>
-                </div>
-              </div>
-            )}
-          />
+          <Tooltip content={<CustomTooltip />} cursor={{ fill: 'rgba(255,255,255,0.03)', radius: 4 }} />
           
-          {/* Current Price Line */}
           <ReferenceLine 
             x={currentPrice} 
-            stroke="#999999" 
-            strokeDasharray="3 1"
+            stroke="var(--main-text-muted)" 
+            strokeDasharray="3 3"
+            strokeWidth={1.5}
             label={{ 
-              value: `${crypto}: ${currentPrice.toLocaleString()} USD`, 
+              value: `${crypto}: ${currentPrice.toLocaleString()}`, 
               position: 'top',
-              fill: '#ffffff',
-              fontSize: 12,
+              fill: 'var(--main-text-primary)',
+              fontSize: 10,
+              fontWeight: 600,
               style: {
-                background: 'rgba(20, 25, 34, 0.9)',
-                padding: '5px 8px',
+                backgroundColor: 'rgba(15, 23, 42, 0.9)',
+                padding: '2px 6px',
                 borderRadius: '4px'
               }
             }}
           />
           
-          <Bar dataKey="calls" fill="#00c087" radius={[3, 3, 0, 0]} />
-          <Bar dataKey="puts" fill="#ff5252" radius={[0, 0, 3, 3]} />
+          <Bar dataKey="calls" fill="var(--positive)" radius={[3, 3, 0, 0]} barSize={8} />
+          <Bar dataKey="puts" fill="var(--negative)" radius={[3, 3, 0, 0]} barSize={8} />
         </BarChart>
       </ResponsiveContainer>
     </div>
@@ -142,8 +139,7 @@ const VolumeStrikeChart = ({ crypto }) => {
 };
 
 VolumeStrikeChart.propTypes = {
-  crypto: PropTypes.string.isRequired,
-  timeframe: PropTypes.string
+  crypto: PropTypes.string.isRequired
 };
 
 export default VolumeStrikeChart;

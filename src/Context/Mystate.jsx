@@ -6,16 +6,14 @@ function Mystate(props) {
   const [mode, setMode] = useState("light");
 
   const toggleMode = () => {
-    if (mode === "light") {
-      setMode("dark");
-      document.body.style.backgroundColor = "black";
-    } else {
-      setMode("light");
-      document.body.style.backgroundColor = "white";
-    }
-
-    // Add smooth transition effect
-    document.body.style.transition = "background-color 0.3s ease-in-out";
+    const newMode = mode === "light" ? "dark" : "light";
+    setMode(newMode);
+    
+    // Apply theme class to document element for global CSS variables
+    document.documentElement.className = newMode;
+    document.body.className = newMode;
+    
+    // Body background handled via CSS variables in index.css
   };
 
   return (

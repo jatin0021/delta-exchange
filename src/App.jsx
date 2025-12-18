@@ -15,6 +15,8 @@ import Api from "./pages/Algohub/Apis/Api";
 import TradeHistory from "./pages/Algohub/Trade Data/TradeHistory";
 import StrategyBuilder from "./pages/StrategyBuilder/StrategyBuilder";
 import OptionsAnalytics from "./pages/OptionsAnalytics/OptionsAnalytics";
+import Rewards from "./pages/Rewards/Rewards";
+import Referral from "./pages/Referral/Referral";
 
 import Account from "./Account/Account";
 
@@ -38,7 +40,7 @@ function AppContent() {
     <>
       <Navbar />
       {isMarketsPage && <PromoCarousel />}
-      <div className={(isAccountPage || isStrategyBuilderPage) ? "h-[calc(100vh-48px)]" : ""}>
+      <div className={`${mode} ${(isAccountPage || isStrategyBuilderPage) ? "h-[calc(100vh-48px)]" : ""}`}>
         <Routes>
           <Route path="/" element={<Home />} />
           <Route path="/markets/*" element={<MainDash />} />
@@ -48,7 +50,9 @@ function AppContent() {
           <Route path="/algohub/trade-data/" element={<TradeHistory mode={mode} />} />
           <Route path="/algohub/trading-bot/" element={<Account mode={mode} defaultActiveSection="Trading Bot" />} />
           <Route path="/more/strategy-builder/" element={<StrategyBuilder mode={mode} />} />
-          <Route path="/options-analytics/" element={<OptionsAnalytics mode={mode} />} />
+          <Route path="/more/analytics/" element={<OptionsAnalytics mode={mode} />} />
+          <Route path="/more/rewards/" element={<Rewards mode={mode} />} />
+          <Route path="/more/referral-program/" element={<Referral mode={mode} />} />
         </Routes>
       </div>
       {!isAccountPage && !isStrategyBuilderPage && <Footer />}
