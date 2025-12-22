@@ -235,10 +235,12 @@ export default function Navbar() {
         {/* LEFT: Logo + Nav Links */}
         <div className="flex items-center gap-7">
           <NavLink to="/" className="flex items-center">
-            {/* Desktop Logo (Full) */}
-            {/* Logo used on all screen sizes for consistency */}
-            <div className="block">
-              <DeltaLogo className="w-[110px] md:w-[139px]" />
+            {/* Logo used on all screen sizes for consistency, but icon on mobile */}
+            <div className="flex items-center">
+              <img src="/logo-icon.png" alt="Logo" className="block md:hidden h-8 w-auto" />
+              <div className="hidden md:block">
+                <DeltaLogo className="w-[139px]" />
+              </div>
             </div>
           </NavLink>
 

@@ -76,40 +76,42 @@ export default function PromoCarousel() {
 
   return (
     <div
-      className={`relative py-10 px-6 md:px-12 w-100vw transition-colors duration-300 ${
+      className={`relative py-4 w-full transition-colors duration-300 ${
         mode === "dark" ? "bg-[#15161B]" : "bg-gray-100"
       }`}
     >
-      <div className="relative max-w-[1300px] mx-auto">
-        {/* Scroll Buttons */}
+      <div className="relative group">
+        {/* Scroll Buttons - Visible on hover or touch */}
         <button
           onClick={() => scroll("left")}
-          className="absolute left-0 top-1/2 -translate-y-1/2 p-2 md:p-3 rounded-full z-10 shadow-lg 
-          bg-gray-200 dark:bg-[#2A2A2A] dark:text-white text-gray-700 hover:bg-gray-300 dark:hover:bg-[#3a3a3a]"
+          className="absolute left-2 top-1/2 -translate-y-1/2 p-2.5 rounded-full z-20 shadow-xl 
+          bg-white/90 dark:bg-[#2A2A2A]/90 dark:text-white text-gray-700 hover:bg-white dark:hover:bg-[#3a3a3a] 
+          opacity-0 group-hover:opacity-100 transition-opacity hidden md:flex items-center justify-center border border-gray-200 dark:border-gray-700"
         >
-          <FaChevronLeft size={18} />
+          <FaChevronLeft size={16} />
         </button>
 
         <button
           onClick={() => scroll("right")}
-          className="absolute right-0 top-1/2 -translate-y-1/2 p-2 md:p-3 rounded-full z-10 shadow-lg 
-          bg-gray-200 dark:bg-[#2A2A2A] dark:text-white text-gray-700 hover:bg-gray-300 dark:hover:bg-[#3a3a3a]"
+          className="absolute right-2 top-1/2 -translate-y-1/2 p-2.5 rounded-full z-20 shadow-xl 
+          bg-white/90 dark:bg-[#2A2A2A]/90 dark:text-white text-gray-700 hover:bg-white dark:hover:bg-[#3a3a3a] 
+          opacity-0 group-hover:opacity-100 transition-opacity hidden md:flex items-center justify-center border border-gray-200 dark:border-gray-700"
         >
-          <FaChevronRight size={18} />
+          <FaChevronRight size={16} />
         </button>
 
         {/* Cards Container */}
         <div
           ref={scrollRef}
-          className="flex gap-5 overflow-x-auto scroll-smooth hide-scrollbar px-8 md:px-10"
+          className="flex gap-4 md:gap-5 overflow-x-auto scroll-smooth no-scrollbar px-2 md:px-4 pb-2"
         >
           {cards.map((card, index) => (
             <div
               key={index}
-              className="min-w-[200px] md:min-w-[220px] lg:min-w-[250px] rounded-xl flex-shrink-0 p-5 relative
-              bg-orange-50 dark:bg-[#3A1D09] text-gray-800 dark:text-white 
-              border border-orange-100 dark:border-none 
-              hover:scale-[1.02] transition-transform duration-300 ease-in-out"
+              className="min-w-[210px] md:min-w-[240px] lg:min-w-[270px] rounded-xl flex-shrink-0 p-5 relative
+              bg-white dark:bg-[#202126] text-gray-800 dark:text-white 
+              border border-gray-100 dark:border-gray-800/50
+              hover:shadow-lg dark:hover:shadow-orange-500/5 transition-all duration-300"
             >
               {card.type === "coins" ? (
                 <>

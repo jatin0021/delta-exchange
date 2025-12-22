@@ -345,177 +345,175 @@ const OptionsDashboard = ({ mode = "light" }) => {
         </div>
       </ChartCard>
       {/* ======= Filters + Recent Options Trades Section ======= */}
+      {/* ======= Filters + Recent Options Trades Section ======= */}
       <section
-  className={`mt-8 rounded-2xl border p-5 transition-all duration-300 flex flex-col lg:flex-row justify-between gap-6 ${
-    isDark
-      ? "bg-[#1E1F24] border-gray-700 text-gray-200"
-      : "bg-gray-100 border-gray-300 text-gray-700"
-  }`}
->
-  {/* Left Section — Filters */}
-  <div
-    className={`border rounded-xl p-4 flex-shrink-0`}
-    style={{ width: "420px", height: "400px" }}
-  >
-    <h2 className="text-base font-semibold mb-3">Filters</h2>
-
-    {/* Underlying */}
-    <div className="mb-3">
-      <label className="block text-sm mb-1">Underlying</label>
-      <select
-        className={`w-full p-2 rounded-md border text-sm ${
+        className={`mt-8 rounded-2xl border p-5 transition-all duration-300 flex flex-col lg:flex-row justify-between gap-6 ${
           isDark
             ? "bg-[#1E1F24] border-gray-700 text-gray-200"
             : "bg-gray-100 border-gray-300 text-gray-700"
         }`}
       >
-        <option>All</option>
-        <option>BTC</option>
-        <option>ETH</option>
-      </select>
-    </div>
-
-    {/* Contract */}
-    <div className="mb-3">
-      <label className="block text-sm mb-1">Contract</label>
-      <select
-        className={`w-full p-2 rounded-md border text-sm ${
-          isDark
-            ? "bg-[#1E1F24] border-gray-700 text-gray-200"
-            : "bg-gray-100 border-gray-300 text-gray-700"
-        }`}
-      >
-        <option>All</option>
-        <option>Call</option>
-        <option>Put</option>
-      </select>
-    </div>
-
-    {/* Notional Range */}
-    <div className="mb-3">
-      <label className="block text-sm mb-1">Notional ($)</label>
-      <div className="flex items-center gap-2">
-        <input
-          type="text"
-          placeholder="Min ($)"
-          className={`w-1/2 p-2 rounded-md border text-sm ${
-            isDark
-              ? "bg-[#1E1F24] border-gray-700 text-gray-200"
-              : "bg-gray-100 border-gray-300 text-gray-700"
-          }`}
-        />
-        <span className="text-sm">to</span>
-        <input
-          type="text"
-          placeholder="Max ($)"
-          className={`w-1/2 p-2 rounded-md border text-sm ${
-            isDark
-              ? "bg-[#1E1F24] border-gray-700 text-gray-200"
-              : "bg-gray-100 border-gray-300 text-gray-700"
-          }`}
-        />
-      </div>
-    </div>
-
-    {/* Expiry */}
-    <div className="mb-4">
-      <label className="block text-sm mb-1">Expiry</label>
-      <select
-        className={`w-full p-2 rounded-md border text-sm ${
-          isDark
-            ? "bg-[#1E1F24] border-gray-700 text-gray-200"
-            : "bg-gray-100 border-gray-300 text-gray-700"
-        }`}
-      >
-        <option>All</option>
-        <option>30/10/25</option>
-        <option>31/10/25</option>
-        <option>07/11/25</option>
-      </select>
-    </div>
-
-    {/* Clear All */}
-    <button className="w-full bg-orange-500 hover:bg-orange-600 text-white font-medium py-1.5 rounded-md text-sm transition">
-      Clear All
-    </button>
-  </div>
-
-  {/* Right Section — Recent Options Trades */}
-  <div
-    className={`border rounded-xl p-4 flex flex-col`}
-    style={{ width: "1080px", height: "315px" }}
-  >
-    <div className="flex items-center justify-between mb-3">
-      <h2 className="text-base font-semibold">
-        Recent Options Trades{" "}
-        <span
-          className={`text-sm ${
-            isDark ? "text-gray-400" : "text-gray-600"
-          }`}
+        {/* Left Section — Filters */}
+        <div
+          className={`border rounded-xl p-4 flex-shrink-0 w-full lg:w-[420px] lg:h-[400px]`}
         >
-          (Upto Last 500 trades)
-        </span>
-      </h2>
-    </div>
+          <h2 className="text-base font-semibold mb-3">Filters</h2>
 
-    {/* Scrollable Table */}
-    <div className="flex-1 overflow-y-auto rounded-md">
-      <table className="w-full text-sm border-collapse">
-        <thead
-          className={`sticky top-0 z-10 ${
-            isDark ? "bg-[#1E1F24]" : "bg-gray-100"
-          }`}
-        >
-          <tr
-            className={`font-semibold ${
-              isDark ? "text-gray-300" : "text-gray-600"
-            }`}
-          >
-            <th className="py-2 px-3 text-left">Underlying</th>
-            <th className="py-2 px-3 text-left">Contract</th>
-            <th className="py-2 px-3 text-left">Strike</th>
-            <th className="py-2 px-3 text-left">Expiry Date</th>
-            <th className="py-2 px-3 text-left">Price</th>
-            <th className="py-2 px-3 text-left">Notional ($)</th>
-            <th className="py-2 px-3 text-left">Taker</th>
-            <th className="py-2 px-3 text-left">Time</th>
-          </tr>
-        </thead>
-        <tbody>
-          {[...Array(10)].map((_, i) => (
-            <tr
-              key={i}
-              onClick={() => navigate('/chart/', { state: { symbol: 'ETH', strike: '4,200' } })}
-              onKeyDown={(e) => { if (e.key === 'Enter') navigate('/chart/', { state: { symbol: 'ETH', strike: '4,200' } }); }}
-              tabIndex={0}
-              role="button"
-              className={`border-t cursor-pointer ${
-                isDark ? "border-gray-700" : "border-gray-300"
+          {/* Underlying */}
+          <div className="mb-3">
+            <label className="block text-sm mb-1">Underlying</label>
+            <select
+              className={`w-full p-2 rounded-md border text-sm ${
+                isDark
+                  ? "bg-[#1E1F24] border-gray-700 text-gray-200"
+                  : "bg-gray-100 border-gray-300 text-gray-700"
               }`}
             >
-              <td className="py-2 px-3">ETH</td>
-              <td className="py-2 px-3">Call</td>
-              <td className="py-2 px-3">4,200</td>
-              <td className="py-2 px-3">30/10/25</td>
-              <td className="py-2 px-3 text-green-500">5.5 ↑</td>
-              <td className="py-2 px-3">3,213.01</td>
-              <td className="py-2 px-3">Buy</td>
-              <td className="py-2 px-3">22:32:36</td>
-            </tr>
-          ))}
-        </tbody>
-      </table>
-    </div>
+              <option>All Assets</option>
+              <option>BTC</option>
+              <option>ETH</option>
+            </select>
+          </div>
 
-    <p
-      className={`text-right text-xs mt-3 ${
-        isDark ? "text-gray-400" : "text-gray-600"
-      }`}
-    >
-      Last Updated: 29th Oct 2025, 22:31
-    </p>
-  </div>
-</section>
+          {/* Contract */}
+          <div className="mb-3">
+            <label className="block text-sm mb-1">Option Type</label>
+            <select
+              className={`w-full p-2 rounded-md border text-sm ${
+                isDark
+                  ? "bg-[#1E1F24] border-gray-700 text-gray-200"
+                  : "bg-gray-100 border-gray-300 text-gray-700"
+              }`}
+            >
+              <option>All</option>
+              <option>Call</option>
+              <option>Put</option>
+            </select>
+          </div>
+
+          {/* Notional Range */}
+          <div className="mb-3">
+            <label className="block text-sm mb-1">Notional ($)</label>
+            <div className="flex items-center gap-2">
+              <input
+                type="text"
+                placeholder="Min ($)"
+                className={`w-1/2 p-2 rounded-md border text-sm ${
+                  isDark
+                    ? "bg-[#1E1F24] border-gray-700 text-gray-200"
+                    : "bg-gray-100 border-gray-300 text-gray-700"
+                }`}
+              />
+              <span className="text-sm">to</span>
+              <input
+                type="text"
+                placeholder="Max ($)"
+                className={`w-1/2 p-2 rounded-md border text-sm ${
+                  isDark
+                    ? "bg-[#1E1F24] border-gray-700 text-gray-200"
+                    : "bg-gray-100 border-gray-300 text-gray-700"
+                }`}
+              />
+            </div>
+          </div>
+
+          {/* Expiry */}
+          <div className="mb-4">
+            <label className="block text-sm mb-1">Expiry Date</label>
+            <select
+              className={`w-full p-2 rounded-md border text-sm ${
+                isDark
+                  ? "bg-[#1E1F24] border-gray-700 text-gray-200"
+                  : "bg-gray-100 border-gray-300 text-gray-700"
+              }`}
+            >
+              <option>All Expiries</option>
+              <option>Next 24h</option>
+              <option>This Week</option>
+            </select>
+          </div>
+
+          {/* Clear All */}
+          <button className="w-full bg-orange-500 hover:bg-orange-600 text-white font-medium py-1.5 rounded-md text-sm transition">
+            Clear All
+          </button>
+        </div>
+
+        {/* Right Section — Recent Options Trades */}
+        <div
+          className={`border rounded-xl p-4 flex flex-col w-full lg:w-[1080px] lg:h-[315px]`}
+        >
+          <div className="flex items-center justify-between mb-3">
+            <h2 className="text-base font-semibold">
+              Recent Options Trades{" "}
+              <span
+                className={`text-sm ${
+                  isDark ? "text-gray-400" : "text-gray-600"
+                }`}
+              >
+                (Upto Last 500 trades)
+              </span>
+            </h2>
+          </div>
+
+          {/* Scrollable Table */}
+          <div className="flex-1 overflow-x-auto rounded-md no-scrollbar">
+            <table className="w-full text-sm border-collapse min-w-[600px] lg:min-w-0">
+              <thead
+                className={`sticky top-0 z-10 ${
+                  isDark ? "bg-[#1E1F24]" : "bg-gray-100"
+                }`}
+              >
+                <tr
+                  className={`font-semibold ${
+                    isDark ? "text-gray-300" : "text-gray-600"
+                  }`}
+                >
+                  <th className="py-2 px-3 text-left">Underlying</th>
+                  <th className="py-2 px-3 text-left">Type</th>
+                  <th className="py-2 px-3 text-left">Strike</th>
+                  <th className="py-2 px-3 text-left">Expiry</th>
+                  <th className="py-2 px-3 text-left">Price</th>
+                  <th className="py-2 px-3 text-left">Notional ($)</th>
+                  <th className="py-2 px-3 text-left">Taker</th>
+                  <th className="py-2 px-3 text-left">Time</th>
+                </tr>
+              </thead>
+              <tbody>
+                {[...Array(10)].map((_, i) => (
+                  <tr
+                    key={i}
+                    onClick={() => navigate('/chart/', { state: { symbol: 'ETH', strike: '4,200' } })}
+                    onKeyDown={(e) => { if (e.key === 'Enter') navigate('/chart/', { state: { symbol: 'ETH', strike: '4,200' } }); }}
+                    tabIndex={0}
+                    role="button"
+                    className={`border-t cursor-pointer ${
+                      isDark ? "border-gray-700 hover:bg-gray-800/30" : "border-gray-300 hover:bg-gray-50"
+                    }`}
+                  >
+                    <td className="py-2 px-3 font-bold">ETH</td>
+                    <td className="py-2 px-3">Call</td>
+                    <td className="py-2 px-3">4,200</td>
+                    <td className="py-2 px-3">30/10/25</td>
+                    <td className="py-2 px-3 text-green-500 font-bold">5.5 ↑</td>
+                    <td className="py-2 px-3">3,213.01</td>
+                    <td className="py-2 px-3">Buy</td>
+                    <td className="py-2 px-3">22:32:36</td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+
+          <p
+            className={`text-right text-xs mt-3 ${
+              isDark ? "text-gray-400" : "text-gray-600"
+            }`}
+          >
+            Last Updated: 29th Oct 2025, 22:31
+          </p>
+        </div>
+      </section>
 
 
 

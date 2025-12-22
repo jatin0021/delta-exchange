@@ -1,4 +1,5 @@
-import React, { useState } from "react";
+import React, { useState, useContext } from "react";
+import Mycontext from "../../../context/Mycontext";
 import { FiChevronRight } from "react-icons/fi";
 
 const faqs = [
@@ -13,7 +14,7 @@ const faqs = [
           href="/app/account/manageapikeys"
           target="_blank"
           rel="noopener noreferrer"
-          className="text-[#ff7a00] hover:underline"
+          className="text-orange-500 hover:underline"
         >
           “Create A New API Key”
         </a>{" "}
@@ -22,7 +23,7 @@ const faqs = [
           href="https://docs.delta.exchange/#generating-an-api-key"
           target="_blank"
           rel="noopener noreferrer"
-          className="text-[#ff7a00] hover:underline"
+          className="text-orange-500 hover:underline"
         >
           API key management guide.
         </a>
@@ -47,7 +48,7 @@ const faqs = [
           href="https://docs.delta.exchange/#introduction"
           target="_blank"
           rel="noopener noreferrer"
-          className="text-[#ff7a00] hover:underline"
+          className="text-orange-500 hover:underline"
         >
           API documentation
         </a>
@@ -83,7 +84,7 @@ const faqs = [
           href="https://community.india.delta.exchange/"
           target="_blank"
           rel="noopener noreferrer"
-          className="text-[#ff7a00] hover:underline"
+          className="text-orange-500 hover:underline"
         >
           Delta Exchange India Community
         </a>{" "}
@@ -104,6 +105,8 @@ const faqs = [
 ];
 
 const FaqSection = () => {
+  const { mode } = useContext(Mycontext);
+  const isDark = mode === "dark";
   const [openIndex, setOpenIndex] = useState(null);
 
   const toggleFaq = (index) => {
@@ -111,28 +114,30 @@ const FaqSection = () => {
   };
 
   return (
-    <section className="bg-[#141416] text-white py-20 px-6 md:px-16">
-      <div className="max-w-6xl mx-auto">
-        <h2 className="text-3xl md:text-4xl font-semibold mb-10">
+    <section className={`transition-colors duration-300 py-16 px-6 md:px-16 ${isDark ? "bg-[#121317] text-white" : "bg-white text-black"}`}>
+      <div className="max-w-4xl mx-auto">
+        <h2 className={`text-[28px] md:text-3xl font-extrabold mb-10 tracking-tight text-center ${isDark ? "text-white" : "text-black"}`}>
           Frequently Asked Questions
         </h2>
 
-        <div className="flex flex-col gap-4">
+        <div className="flex flex-col gap-3">
           {faqs.map((item, index) => (
             <div
               key={index}
-              className="bg-[#1b1b1d] border border-[#2b2b2e] rounded-xl transition hover:border-[#ff7a00]/40"
+              className={`border rounded-xl transition-all duration-300 ${
+                isDark ? "bg-[#1E1F24] border-gray-700" : "bg-gray-50 border-gray-100 shadow-sm"
+              }`}
             >
               <button
                 onClick={() => toggleFaq(index)}
                 className="w-full cursor-pointer flex justify-between items-center px-6 py-5 text-left focus:outline-none"
               >
-                <span className="text-gray-300 font-medium text-sm sm:text-base">
+                <span className={`font-bold text-sm sm:text-[15px] ${isDark ? "text-gray-200" : "text-gray-700"}`}>
                   {item.q}
                 </span>
                 <FiChevronRight
-                  className={`text-gray-400 text-2xl transition-transform ${
-                    openIndex === index ? "rotate-90 text-[#ff7a00]" : ""
+                  className={`text-gray-400 text-2xl transition-transform duration-300 ${
+                    openIndex === index ? "rotate-90 text-orange-500" : ""
                   }`}
                 />
               </button>
@@ -143,7 +148,7 @@ const FaqSection = () => {
                   openIndex === index ? "max-h-[400px] opacity-100" : "max-h-0 opacity-0"
                 }`}
               >
-                <div className="px-6 pb-5 text-gray-400 text-sm leading-relaxed">
+                <div className={`px-6 pb-5 text-[13px] md:text-sm font-medium leading-relaxed ${isDark ? "text-gray-400" : "text-gray-500"}`}>
                   {item.a}
                 </div>
               </div>

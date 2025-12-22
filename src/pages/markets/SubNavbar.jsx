@@ -23,28 +23,41 @@ const SubNavbar = ({ mode }) => {
     "text-gray-400 hover:text-gray-600 dark:hover:text-gray-200";
 
   return (
-    <div className={`w-full ${containerClasses}`}>
-      <div className="flex justify-between items-center px-4 md:px-6 py-1 overflow-hidden">
+    <div className={`w-full md:static sticky top-0 z-[90] ${containerClasses}`}>
+      <div className="flex justify-between items-center px-4 md:px-6 py-1 md:py-0 md:h-12 overflow-hidden">
         {/* Left side: navigation links - Horizontal scroll on mobile */}
-        <div className="flex space-x-6 md:space-x-8 text-sm font-medium items-center overflow-x-auto no-scrollbar whitespace-nowrap py-2 flex-grow">
+        <div className="flex space-x-6 md:space-x-8 text-sm font-medium items-center overflow-x-auto no-scrollbar whitespace-nowrap py-2 md:py-0 h-full flex-grow">
           {links.map((link) => (
             <NavLink
               key={link.name}
               to={link.path}
               className={({ isActive }) =>
-                `transition-all duration-200 shrink-0 ${
+                `transition-all duration-200 shrink-0 h-full flex items-center ${
                   isActive ? activeLinkClasses : inactiveLinkClasses
                 }`
               }
             >
               {link.name}
+              {link.name === "Straddle" && (
+                <span className="ml-1 px-1 py-0.5 bg-orange-500 text-[8px] text-white rounded font-black uppercase leading-none md:hidden">New</span>
+              )}
             </NavLink>
           ))}
         </div>
 
-        {/* Right side: volume info + download - Hidden on small mobile */}
-        <div className="hidden sm:flex items-center space-x-3 text-sm shrink-0 ml-4">
-          <p className="text-gray-400">
+        {/* Search Icon for Mobile */}
+        <div className="md:hidden flex items-center px-1">
+          <button className={`p-1.5 rounded-full transition-colors ${mode === "dark" ? "text-gray-400 hover:bg-gray-800" : "text-gray-600 hover:bg-gray-100"}`}>
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+              <circle cx="11" cy="11" r="8"></circle>
+              <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+            </svg>
+          </button>
+        </div>
+
+        {/* Right side: volume info + download - Reverted for Desktop */}
+        <div className="hidden sm:flex items-center space-x-3 text-sm shrink-0 ml-4 h-full">
+          <p className="text-gray-400 whitespace-nowrap">
             24 hr Volume{" "}
             <span className={mode === "dark" ? "text-white font-semibold" : "text-black font-semibold"}>
               $2,151.5M

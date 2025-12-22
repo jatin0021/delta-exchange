@@ -1,64 +1,39 @@
-import React from "react";
-import {
-  FaLink,
-  FaDatabase,
-  FaChartLine,
-  FaHistory,
-  FaNetworkWired,
-} from "react-icons/fa";
+import React, { useContext } from "react";
+import Mycontext from "../../../context/Mycontext";
 
 const DeltaIntegrationsSection = () => {
+  const { mode } = useContext(Mycontext);
+  const isDark = mode === "dark";
+
   return (
-    <section className="bg-[#121212] text-white py-20 px-6 md:px-16">
-      <div className="max-w-6xl mx-auto space-y-16">
-        {/* ------------------ INTEGRATIONS ------------------ */}
-        <div>
-          <h2 className="text-3xl md:text-4xl font-extrabold mb-3">
-            Delta Exchange Integrations
-          </h2>
-          <p className="text-gray-400 text-base md:text-lg mb-10">
-            Leverage powerful integrations to automate and streamline your
-            trading strategies with ease.
-          </p>
+    <section className={`transition-colors duration-300 py-16 px-6 md:px-16 ${isDark ? "bg-[#121317] text-white" : "bg-white text-black"}`}>
+      <div className="max-w-6xl mx-auto">
+        <h2 className={`text-[28px] md:text-4xl font-extrabold mb-3 tracking-tight ${isDark ? "text-white" : "text-black"}`}>
+          Delta Exchange Integrations
+        </h2>
+        <p className={`text-[15px] md:text-lg mb-10 font-medium ${isDark ? "text-gray-400" : "text-gray-500"}`}>
+          Leverage powerful integrations to automate and streamline your
+          trading strategies with ease.
+        </p>
 
-          {/* Integration Cards */}
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
-            {/* TradingView */}
-            <div className="bg-[#181818] rounded-2xl py-8 px-6 flex items-center justify-center border border-[#222] hover:border-[#ff7a00] transition-all duration-300 hover:shadow-lg hover:shadow-[#ff7a00]/20">
+        {/* Integration Cards */}
+        <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 md:gap-6">
+          {[
+            { name: "TradingView", url: "https://static.delta.exchange/landing-page/api-guide/trading-view.svg" },
+            { name: "Tradetron", url: "https://static.delta.exchange/landing-page/api-guide/trade-tron.svg" },
+            { name: "AlgoTest", url: "https://static.delta.exchange/landing-page/api-guide/algo-test.svg" },
+            { name: "NextLevelBot", url: "https://static.delta.exchange/landing-page/api-guide/next-level-bot.svg" },
+          ].map((logo, idx) => (
+            <div key={idx} className={`rounded-xl py-10 px-6 flex items-center justify-center border transition-all duration-300 group ${
+              isDark ? "bg-[#1E1F24] border-gray-700 hover:border-orange-500/50" : "bg-gray-50 border-gray-100 hover:border-orange-500/30 hover:shadow-sm"
+            }`}>
               <img
-                src="https://static.delta.exchange/landing-page/api-guide/trading-view.svg"
-                alt="TradingView"
-                className="opacity-100"
+                src={logo.url}
+                alt={logo.name}
+                className="h-8 md:h-12 w-auto object-contain grayscale group-hover:grayscale-0 transition-all duration-300"
               />
             </div>
-
-            {/* Tradetron */}
-            <div className="bg-[#181818] rounded-2xl py-8 px-6 flex items-center justify-center border border-[#222] hover:border-[#ff7a00] transition-all duration-300 hover:shadow-lg hover:shadow-[#ff7a00]/20">
-               <img
-                src="https://static.delta.exchange/landing-page/api-guide/trade-tron.svg"
-                alt="TradingView"
-                className="opacity-100"
-              />
-            </div>
-
-            {/* AlgoTest */}
-            <div className="bg-[#181818] rounded-2xl py-8 px-6 flex items-center justify-center border border-[#222] hover:border-[#ff7a00] transition-all duration-300 hover:shadow-lg hover:shadow-[#ff7a00]/20">
-              <img
-                src="https://static.delta.exchange/landing-page/api-guide/algo-test.svg"
-                alt="TradingView"
-                className="opacity-100"
-              />
-            </div>
-
-            {/* NextLevelBot */}
-            <div className="bg-[#181818] rounded-2xl py-8 px-6 flex items-center justify-center border border-[#222] hover:border-[#ff7a00] transition-all duration-300 hover:shadow-lg hover:shadow-[#ff7a00]/20">
-              <img
-                src="https://static.delta.exchange/landing-page/api-guide/next-level-bot.svg"
-                alt="TradingView"
-                className="opacity-100"
-              />
-            </div>
-          </div>
+          ))}
         </div>
       </div>
     </section>

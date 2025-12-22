@@ -3,6 +3,7 @@ import { Routes, Route } from "react-router-dom";
 import Mystate from "./context/Mystate";
 import Footer from "./components/layout/Footer";
 import Navbar from "./components/layout/Navbar";
+import MobileBottomNav from "./components/layout/MobileBottomNav";
 import Markets from "./pages/markets/Markets";
 import Chart from "./pages/chart/Chart";
 import PromoCarousel from "./components/markets/PromoCarousel";
@@ -32,15 +33,27 @@ function AppContent() {
   const { mode } = useContext(MyContext);
   const location = useLocation();
   const isMarketsPage = location.pathname.startsWith("/markets");
+  const isChartPage = location.pathname.startsWith("/chart");
+  const isAnalyticsPage = location.pathname.startsWith("/more/analytics");
+  const isTradeDataPage = location.pathname.startsWith("/algohub/trade-data");
+  const isApiPage = location.pathname.startsWith("/algohub/apis");
   const isAccountPage = location.pathname.startsWith("/algohub/trading-bot") || 
                         location.pathname.startsWith("/account");
   const isStrategyBuilderPage = location.pathname.startsWith("/more/strategy-builder");
 
+  const hideFooter = isMarketsPage || isChartPage || isAnalyticsPage || isTradeDataPage || isApiPage || isAccountPage || isStrategyBuilderPage;
+
   return (
     <>
-      <Navbar />
-      {isMarketsPage && <PromoCarousel />}
-      <div className={`${mode} ${(isAccountPage || isStrategyBuilderPage) ? "h-[calc(100vh-48px)]" : ""}`}>
+      <div className={hideFooter ? "hidden lg:block" : ""}>
+        <Navbar />
+      </div>
+      {isMarketsPage && (
+        <div className="hidden lg:block">
+          <PromoCarousel />
+        </div>
+      )}
+      <div className={`${mode} ${(isAccountPage || isStrategyBuilderPage) ? "lg:h-[calc(100vh-48px)] h-screen" : ""} ${hideFooter && !isApiPage ? "mb-[60px] lg:mb-0" : ""}`}>
         <Routes>
           <Route path="/" element={<Home />} />
           <Route path="/markets/*" element={<Markets />} />
@@ -55,7 +68,8 @@ function AppContent() {
           <Route path="/more/referral-program/" element={<Referral mode={mode} />} />
         </Routes>
       </div>
-      {!isAccountPage && !isStrategyBuilderPage && <Footer />}
+      {!hideFooter && <Footer />}
+      {hideFooter && !isApiPage && <MobileBottomNav />}
     </>
   );
 }

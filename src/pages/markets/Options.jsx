@@ -387,10 +387,12 @@ const Options = ({ mode }) => {
     },
   ];
 
+  const [activeSide, setActiveSide] = useState("Calls"); // "Calls" or "Puts" for mobile view
+
   return (
     <div className={`w-full min-h-screen p-4 ${containerClasses}`}>
-      {/* --- Top Controls --- */}
-      <div className="flex flex-wrap justify-between items-center mb-6">
+      {/* --- Top Controls --- Reverted for Desktop */}
+      <div className="flex flex-wrap justify-between items-center mb-6 gap-4">
         <div className="flex items-center gap-3">
           {/* Asset Toggle */}
           {["BTC", "ETH"].map((asset) => (
@@ -422,7 +424,7 @@ const Options = ({ mode }) => {
         {/* Right Controls */}
         <div className="flex items-center gap-3">
           <span className={`text-sm ${labelClasses}`}>
-            24 hr Volume <span className="font-semibold text-white">$2151.5M</span>
+            24 hr Volume <span className="font-semibold text-white md:text-white">$2151.5M</span>
           </span>
           <button
             className={`flex items-center px-3 py-2 rounded-md text-sm ${
@@ -436,12 +438,29 @@ const Options = ({ mode }) => {
         </div>
       </div>
 
-      {/* --- BTC Info --- */}
+      {/* --- BTC Info & Mobile Toggle --- */}
       <div className="flex justify-between items-center mb-4">
         <span className="text-green-400">
           BTC: <span className="font-semibold">$115,300.8</span>
         </span>
-        <span className={labelClasses}>Time to Expiry: 0d:17h:50m</span>
+        
+        {/* Mobile Call/Put Toggle */}
+        <div className="md:hidden flex p-1 rounded-lg bg-gray-900/50 border border-gray-800 w-32">
+             <button 
+                onClick={() => setActiveSide("Calls")}
+                className={`flex-1 py-1 text-[10px] font-bold uppercase rounded transition-all ${activeSide === 'Calls' ? 'bg-orange-500 text-white' : 'text-gray-500'}`}
+             >
+                Calls
+             </button>
+             <button 
+                onClick={() => setActiveSide("Puts")}
+                className={`flex-1 py-1 text-[10px] font-bold uppercase rounded transition-all ${activeSide === 'Puts' ? 'bg-blue-500 text-white' : 'text-gray-500'}`}
+             >
+                Puts
+             </button>
+        </div>
+
+        <span className={`${labelClasses} hidden md:inline text-sm`}>Time to Expiry: 0d:17h:50m</span>
       </div>
 
       {/* --- Options Table --- */}
@@ -449,71 +468,96 @@ const Options = ({ mode }) => {
         <table className="w-full border-collapse text-sm">
           <thead>
             <tr className={tableHeaderClasses}>
-              {/* Calls */}
-              <th colSpan="7" className="py-3 px-4 text-left text-orange-400">
-                Calls
-              </th>
+              {/* Calls Side */}
+              {(activeSide === "Calls" || !window.matchMedia("(max-width: 768px)").matches) && (
+                <th colSpan={window.matchMedia("(max-width: 768px)").matches ? "4" : "7"} className="py-3 px-4 text-left text-orange-400">
+                  Calls
+                </th>
+              )}
+              
               <th className="py-3 px-4 text-center border-x border-gray-700 text-gray-400">
                 Strike
               </th>
-              {/* Puts */}
-              <th colSpan="7" className="py-3 px-4 text-right text-blue-400">
-                Puts
-              </th>
+
+              {/* Puts Side */}
+              {(activeSide === "Puts" || !window.matchMedia("(max-width: 768px)").matches) && (
+                <th colSpan={window.matchMedia("(max-width: 768px)").matches ? "4" : "7"} className="py-3 px-4 text-right text-blue-400">
+                  Puts
+                </th>
+              )}
             </tr>
 
             <tr className={tableHeaderClasses}>
-              <th className="px-3 py-2 text-left">Bid Qty BTC</th>
-              <th className="px-3 py-2 text-left">Bid Price / IV</th>
-              <th className="px-3 py-2 text-left">Ask Price / IV</th>
-              <th className="px-3 py-2 text-left">Ask Qty BTC</th>
-              <th className="px-3 py-2 text-left">Delta</th>
-              <th className="px-3 py-2 text-left">6H OI Chg.</th>
-              <th className="px-3 py-2 text-left">OI</th>
+              {/* Desktop Headers (Visible based on mobile toggle or screen width) */}
+              {(activeSide === "Calls" || !window.matchMedia("(max-width: 768px)").matches) && (
+                <>
+                  <th className="px-3 py-2 text-left">Bid Qty BTC</th>
+                  <th className="px-3 py-2 text-left">Bid Price / IV</th>
+                  <th className="px-3 py-2 text-left">Ask Price / IV</th>
+                  <th className="px-3 py-2 text-left">Ask Qty BTC</th>
+                  <th className="hidden lg:table-cell px-3 py-2 text-left">Delta</th>
+                  <th className="hidden lg:table-cell px-3 py-2 text-left">6H OI Chg.</th>
+                  <th className="hidden lg:table-cell px-3 py-2 text-left">OI</th>
+                </>
+              )}
 
-              <th className="px-3 py-2 text-center border-x border-gray-700">Strike</th>
+              <th className="px-3 py-2 text-center border-x border-gray-700 bg-[#1E1F24] z-10 sticky left-0 right-0 md:static">Strike</th>
 
-              <th className="px-3 py-2 text-right">OI</th>
-              <th className="px-3 py-2 text-right">6H OI Chg.</th>
-              <th className="px-3 py-2 text-right">Delta</th>
-              <th className="px-3 py-2 text-right">Bid Qty BTC</th>
-              <th className="px-3 py-2 text-right">Bid Price / IV</th>
-              <th className="px-3 py-2 text-right">Ask Price / IV</th>
-              <th className="px-3 py-2 text-right">Ask Qty BTC</th>
+              {(activeSide === "Puts" || !window.matchMedia("(max-width: 768px)").matches) && (
+                <>
+                  <th className="hidden lg:table-cell px-3 py-2 text-right">OI</th>
+                  <th className="hidden lg:table-cell px-3 py-2 text-right">6H OI Chg.</th>
+                  <th className="hidden lg:table-cell px-3 py-2 text-right">Delta</th>
+                  <th className="px-3 py-2 text-right">Bid Qty BTC</th>
+                  <th className="px-3 py-2 text-right">Bid Price / IV</th>
+                  <th className="px-3 py-2 text-right">Ask Price / IV</th>
+                  <th className="px-3 py-2 text-right">Ask Qty BTC</th>
+                </>
+              )}
             </tr>
           </thead>
 
           <tbody>
             {optionsData.map((row, i) => (
               <tr
-                  key={i}
-                  onClick={() => navigate('/chart/', { state: { strike: row.strike } })}
-                  onKeyDown={(e) => { if (e.key === 'Enter') navigate('/chart/', { state: { strike: row.strike } }); }}
-                  tabIndex={0}
-                  role="button"
-                  className={`border-t ${
-                    isDark ? "border-gray-800 hover:bg-[#1E1F24]" : "border-gray-200 hover:bg-gray-50"
-                  } cursor-pointer`}
-                >
-                <td className="px-3 py-2">{row.bidQty}</td>
-                <td className="px-3 py-2 text-green-400">${row.bidPrice}</td>
-                <td className="px-3 py-2 text-red-400">${row.askPrice}</td>
-                <td className="px-3 py-2">{row.askQty}</td>
-                <td className="px-3 py-2">{row.delta}</td>
-                <td className="px-3 py-2">{row.oiChg}</td>
-                <td className="px-3 py-2">{row.oi}</td>
+                key={i}
+                onClick={() => navigate('/chart/', { state: { strike: row.strike } })}
+                onKeyDown={(e) => { if (e.key === 'Enter') navigate('/chart/', { state: { strike: row.strike } }); }}
+                tabIndex={0}
+                role="button"
+                className={`border-t ${
+                  isDark ? "border-gray-800 hover:bg-[#1E1F24]" : "border-gray-200 hover:bg-gray-50"
+                } cursor-pointer transition-colors`}
+              >
+                {/* Calls Data */}
+                {(activeSide === "Calls" || !window.matchMedia("(max-width: 768px)").matches) && (
+                  <>
+                    <td className="px-3 py-2">{row.bidQty}</td>
+                    <td className="px-3 py-2 text-green-400">${row.bidPrice}</td>
+                    <td className="px-3 py-2 text-red-400">${row.askPrice}</td>
+                    <td className="px-3 py-2">{row.askQty}</td>
+                    <td className="hidden lg:table-cell px-3 py-2">{row.delta}</td>
+                    <td className="hidden lg:table-cell px-3 py-2">{row.oiChg}</td>
+                    <td className="hidden lg:table-cell px-3 py-2">{row.oi}</td>
+                  </>
+                )}
 
-                <td className="px-3 py-2 text-center border-x border-gray-700 font-semibold">
+                <td className="px-3 py-2 text-center border-x border-gray-700 font-semibold bg-[#15161B]/50">
                   {row.strike}
                 </td>
 
-                <td className="px-3 py-2 text-right">{row.oi}</td>
-                <td className="px-3 py-2 text-right">{row.oiChg}</td>
-                <td className="px-3 py-2 text-right">{-row.delta}</td>
-                <td className="px-3 py-2 text-right">{row.putBidQty}</td>
-                <td className="px-3 py-2 text-right text-green-400">${row.putBidPrice}</td>
-                <td className="px-3 py-2 text-right text-red-400">${row.putAskPrice}</td>
-                <td className="px-3 py-2 text-right">{row.putAskQty}</td>
+                {/* Puts Data */}
+                {(activeSide === "Puts" || !window.matchMedia("(max-width: 768px)").matches) && (
+                  <>
+                    <td className="hidden lg:table-cell px-3 py-2 text-right">{row.oi}</td>
+                    <td className="hidden lg:table-cell px-3 py-2 text-right">{row.oiChg}</td>
+                    <td className="hidden lg:table-cell px-3 py-2 text-right">{-row.delta}</td>
+                    <td className="px-3 py-2 text-right">{row.putBidQty}</td>
+                    <td className="px-3 py-2 text-right text-green-400">${row.putBidPrice}</td>
+                    <td className="px-3 py-2 text-right text-red-400">${row.putAskPrice}</td>
+                    <td className="px-3 py-2 text-right">{row.putAskQty}</td>
+                  </>
+                )}
               </tr>
             ))}
           </tbody>
