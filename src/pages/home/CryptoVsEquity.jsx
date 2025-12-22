@@ -1,5 +1,5 @@
 import React, { useContext } from "react";
-import Mycontext from "../../Context/Mycontext";
+import Mycontext from "../../context/Mycontext";
 
 const CryptoFOComparison = () => {
   const { mode } = useContext(Mycontext);

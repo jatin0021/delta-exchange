@@ -24,15 +24,15 @@ const SubNavbar = ({ mode }) => {
 
   return (
     <div className={`w-full ${containerClasses}`}>
-      <div className="flex justify-between items-center px-6 py-1">
-        {/* Left side: navigation links */}
-        <div className="flex space-x-8 text-sm font-medium items-center">
+      <div className="flex justify-between items-center px-4 md:px-6 py-1 overflow-hidden">
+        {/* Left side: navigation links - Horizontal scroll on mobile */}
+        <div className="flex space-x-6 md:space-x-8 text-sm font-medium items-center overflow-x-auto no-scrollbar whitespace-nowrap py-2 flex-grow">
           {links.map((link) => (
             <NavLink
               key={link.name}
               to={link.path}
               className={({ isActive }) =>
-                `transition-all duration-200 ${
+                `transition-all duration-200 shrink-0 ${
                   isActive ? activeLinkClasses : inactiveLinkClasses
                 }`
               }
@@ -42,16 +42,16 @@ const SubNavbar = ({ mode }) => {
           ))}
         </div>
 
-        {/* Right side: volume info + download */}
-        <div className="flex items-center space-x-3 text-sm">
+        {/* Right side: volume info + download - Hidden on small mobile */}
+        <div className="hidden sm:flex items-center space-x-3 text-sm shrink-0 ml-4">
           <p className="text-gray-400">
             24 hr Volume{" "}
-            <span className="font-semibold text-white dark:text-black">
-              $2151.5M
+            <span className={mode === "dark" ? "text-white font-semibold" : "text-black font-semibold"}>
+              $2,151.5M
             </span>
           </p>
           <button
-            className={`px-3 py-1 rounded-md border text-sm ${
+            className={`px-3 py-1 rounded-md border text-sm transition-colors ${
               mode === "dark"
                 ? "border-gray-700 bg-[#1E1F24] text-gray-300 hover:bg-[#24252A]"
                 : "border-gray-300 bg-gray-100 text-gray-700 hover:bg-gray-200"

@@ -1,6 +1,6 @@
 import React, { useContext } from "react";
 import { FaArrowUp, FaArrowDown } from "react-icons/fa";
-import Mycontext from "../../Context/Mycontext";
+import Mycontext from "../../context/Mycontext";
 
 export default function TopBar() {
   const { mode } = useContext(Mycontext);

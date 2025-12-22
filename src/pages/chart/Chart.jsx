@@ -2,7 +2,7 @@ import React, { useContext } from 'react'
 import { useLocation } from 'react-router-dom';
 import TopBar from "./TopBar";
 import TradingPage from "./TradingPage";
-import Mycontext from "../../Context/Mycontext";
+import Mycontext from "../../context/Mycontext";
 import RightSidebar from "./RightSidebar";
 import TradingChart from "./TradingChart";
 import TradingTabs from './TradingTabs';

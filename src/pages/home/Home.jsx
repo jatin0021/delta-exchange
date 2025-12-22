@@ -1,5 +1,5 @@
 import React, { useContext } from 'react'
-import Mycontext from '../../Context/Mycontext'
+import Mycontext from '../../context/Mycontext'
 import HeroSection from './HeroSection'
 import FeaturesSection from './FeaturesSection'
 import ProTradingFeatures from './ProTradingFeatures'

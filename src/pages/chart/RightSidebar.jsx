@@ -1,7 +1,7 @@
 import React, { useState, useContext } from "react";
 import { FiChevronDown, FiChevronUp, FiArrowRight } from "react-icons/fi";
 import { AiOutlineQuestionCircle } from "react-icons/ai";
-import Mycontext from "../../Context/Mycontext";
+import Mycontext from "../../context/Mycontext";
 
 const TradePanel = () => {
   const { mode } = useContext(Mycontext);

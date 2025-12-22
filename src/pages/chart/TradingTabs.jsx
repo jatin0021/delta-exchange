@@ -1,6 +1,6 @@
 import React, { useState, useContext } from "react";
 import { FaRegFileAlt } from "react-icons/fa";
-import Mycontext from "../../Context/Mycontext";
+import Mycontext from "../../context/Mycontext";
 
 const TradingTabs = () => {
   const { mode } = useContext(Mycontext);

@@ -1,6 +1,6 @@
 import { useState, useContext } from "react";
 import { NavLink, useNavigate } from "react-router-dom";
-import Mycontext from "../Context/Mycontext";
+import Mycontext from "../../context/Mycontext";
 import { DeltaLogo } from "./DeltaLogo";
 import {
   FiSearch,
@@ -23,14 +23,72 @@ import {
   FiTrash2,
   FiLogOut,
   FiChevronRight,
+  FiChevronDown,
   FiCreditCard,
   FiX,
   FiHelpCircle,
+  FiMoreHorizontal,
+  FiHeadphones,
+  FiHexagon,
+  FiDroplet,
+  FiSmartphone,
+  FiRefreshCw,
 } from "react-icons/fi";
 import { BsCurrencyRupee, BsBank } from "react-icons/bs";
 import { FaSun, FaMoon, FaRobot, FaDatabase } from "react-icons/fa";
 import { RiArrowDropDownLine } from "react-icons/ri";
 import { MdOutlineVerifiedUser } from "react-icons/md";
+
+const WalletIcon = () => (
+  <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <circle cx="8" cy="8" r="8" fill="#00A64F" />
+    <circle cx="8" cy="8" r="8" fill="url(#paint0_radial_3557_24148)" />
+    <path d="M8.22368 11.4978L6.42368 8.3578V7.6178H7.02368C7.26368 7.6178 7.47368 7.58447 7.65368 7.5178C7.84035 7.44447 7.99368 7.34114 8.11368 7.2078C8.24035 7.07447 8.32702 6.91447 8.37368 6.7278H6.42368V5.9878H8.36368C8.32368 5.81447 8.25368 5.66114 8.15368 5.5278C8.06035 5.39447 7.93368 5.29114 7.77368 5.2178C7.62035 5.1378 7.43368 5.0978 7.21368 5.0978H6.42368V4.3578H10.9337V5.0978H9.36368C9.47702 5.22447 9.57035 5.36114 9.64368 5.5078C9.72368 5.65447 9.77702 5.81447 9.80368 5.9878H10.9337V6.7278H9.82368C9.75702 7.22114 9.56702 7.6078 9.25368 7.8878C8.94035 8.16114 8.53702 8.3478 8.04368 8.4478L10.0037 11.4978H8.22368Z" fill="white" />
+    <defs>
+      <radialGradient id="paint0_radial_3557_24148" cx="0" cy="0" r="1" gradientUnits="userSpaceOnUse" gradientTransform="translate(15.4181 2.80525) scale(10.627)">
+        <stop offset="0.0983633" stopColor="#8AD137" />
+        <stop offset="1" stopColor="#8AD137" stopOpacity="0" />
+      </radialGradient>
+    </defs>
+  </svg>
+);
+
+const PositionsIcon = ({ className }) => (
+  <svg xmlns="http://www.w3.org/2000/svg" width="14" height="16" viewBox="0 0 14 16" fill="none" className={className}>
+    <path d="M2.35653 8.96696L1.44653 8.00696L5.90653 3.46696L4.17653 1.75696L11.4165 0.886963L10.4965 7.99696L8.78653 6.41696L5.58653 9.36696L3.95653 7.86696L2.91653 14.847L10.0765 13.957L8.46653 12.327L12.9765 7.86696L12.0165 6.87696" stroke="currentColor" strokeWidth="1" strokeLinecap="round" fill="none" />
+  </svg>
+);
+
+const SupportIcon = ({ className }) => (
+  <svg width="14" height="16" viewBox="0 0 18 23" fill="none" xmlns="http://www.w3.org/2000/svg" className={className}>
+    <path d="M8.625 21.9718V19.2718C4.8675 19.0768 1.875 15.9568 1.875 12.1543C1.875 8.2243 5.07 5.0293 9 5.0293C12.93 5.0293 16.125 8.2243 16.125 12.1543C16.125 15.8668 13.545 19.6018 9.6975 21.4543L8.625 21.9718ZM9 6.5293C5.895 6.5293 3.375 9.0493 3.375 12.1543C3.375 15.2593 5.895 17.7793 9 17.7793H10.125V19.5043C12.855 17.7793 14.625 14.9443 14.625 12.1543C14.625 9.0493 12.105 6.5293 9 6.5293ZM8.25 15.1543H9.75V16.6543H8.25V15.1543ZM9.75 14.0293H8.25C8.25 11.5918 10.5 11.7793 10.5 10.2793C10.5 9.4543 9.825 8.7793 9 8.7793C8.175 8.7793 7.5 9.4543 7.5 10.2793H6C6 8.6218 7.3425 7.2793 9 7.2793C10.6575 7.2793 12 8.6218 12 10.2793C12 12.1543 9.75 12.3418 9.75 14.0293Z" fill="currentColor" />
+  </svg>
+);
+
+const HamburgerIcon = (props) => (
+  <FiMoreHorizontal {...props} />
+);
+
+const MobileDeltaIcon = () => (
+  <svg width="30" height="30" viewBox="0 0 30 30" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <path d="M10.1209 10.0001L19.8791 15.0001L29.6372 10.0001L10.1209 0V10.0001Z" fill="url(#mobile_gradient_1)" />
+    <path d="M10.1212 19.9999V30L29.6375 19.9999L19.8793 14.9999L10.1212 19.9999Z" fill="url(#mobile_gradient_2)" />
+    <path d="M29.6381 20.0002V10.0001L19.8799 15.0002L29.6381 20.0002Z" fill="#2CB72C" />
+    <path d="M10.12 10.0001V20.0002L0.361877 15.0002L10.12 10.0001Z" fill="#FF9300" />
+    <defs>
+      <linearGradient id="mobile_gradient_1" x1="32.3212" y1="8.56271" x2="20.8051" y2="-1.10809" gradientUnits="userSpaceOnUse">
+        <stop stopColor="#E96C04" />
+        <stop offset="1" stopColor="#FF9300" />
+      </linearGradient>
+      <linearGradient id="mobile_gradient_2" x1="22.8785" y1="10.7865" x2="11.9291" y2="20.6491" gradientUnits="userSpaceOnUse">
+        <stop stopColor="#168016" />
+        <stop offset="1" stopColor="#2CB72C" />
+      </linearGradient>
+    </defs>
+  </svg>
+);
+
+
 
 export default function Navbar() {
   const [isOpen, setIsOpen] = useState(false);
@@ -150,19 +208,38 @@ export default function Navbar() {
     { icon: <FiLogOut className="text-gray-600" />, title: "Logout", to: "/logout" },
   ];
 
+  const mobileNavItems = [
+    { label: "Markets", to: "/markets/", icon: <FiBarChart2 className="text-gray-500" /> },
+    { label: "Futures", to: "/markets/futures", icon: <FiZap className="text-orange-400" /> },
+    { label: "Options", to: "/markets/options", icon: <FiGrid className="text-gray-500" /> },
+    { label: "Straddle", to: "/markets/straddle", icon: <FiLink className="text-gray-500" /> },
+    { label: "Trackers", to: "/markets/trackers", icon: <FiRefreshCw className="text-orange-400" /> },
+    { label: "APIs", to: "/algohub/apis", icon: <FiLink className="text-orange-400" /> },
+    { label: "Offers", to: "/offers", icon: <FiGift className="text-orange-400" /> },
+    { label: "Support", to: "/support", icon: <FiHeadphones className="text-orange-500" />, hasDropdown: true },
+    { label: "Resources", to: "/resources", icon: <FiHexagon className="text-orange-400" />, hasDropdown: true },
+    { label: "Theme", isTheme: true, icon: <FiDroplet className="text-orange-400" /> },
+    { label: "Download App", to: "/download", icon: <FiSmartphone className="text-orange-400" />, hasDropdown: true },
+    { label: "Logout", to: "/logout", icon: <FiLogOut className="text-orange-400" /> },
+  ];
+
   return (
     <nav
       className={`${
         mode === "dark"
           ? "bg-[#15161B] text-white border-gray-700"
           : "bg-white text-black border-gray-300"
-      } border-b w-full transition-colors duration-300 relative z-[40]`}
+      } border-b w-full transition-colors duration-300 sticky top-0 z-[100]`}
     >
       <div className="px-4 flex items-center justify-between h-12">
         {/* LEFT: Logo + Nav Links */}
         <div className="flex items-center gap-7">
           <NavLink to="/" className="flex items-center">
-            <DeltaLogo mode={mode} />
+            {/* Desktop Logo (Full) */}
+            {/* Logo used on all screen sizes for consistency */}
+            <div className="block">
+              <DeltaLogo className="w-[110px] md:w-[139px]" />
+            </div>
           </NavLink>
 
           <div className="hidden lg:flex items-center gap-5">
@@ -265,29 +342,31 @@ export default function Navbar() {
             <span className="text-[11px] text-gray-500 font-medium ml-2">/</span>
           </div>
 
-          <div className="flex items-center gap-6">
+          <div className="flex items-center gap-3 md:gap-6">
             <button
               onClick={() => navigate("/algohub/trading-bot/", { state: { activeSection: "Add Funds" } })}
-              className="hidden sm:flex items-center bg-orange-600 hover:bg-orange-700 text-white px-5 py-2 rounded-md text-sm font-bold shadow-md transition-all"
+              className="hidden lg:flex items-center bg-orange-600 hover:bg-orange-700 text-white px-5 py-2 rounded-md text-sm font-bold shadow-md transition-all"
             >
               Add Funds
             </button>
 
-            <div className={`hidden md:flex items-center px-3 py-1.5 rounded-md text-sm font-semibold ${mode === "dark" ? "bg-[#1E1F24] text-gray-200" : "bg-gray-100 text-gray-800"}`}>
-              <BsCurrencyRupee className={`mr-0.5 text-lg ${mode === "dark" ? "text-emerald-500" : "text-emerald-600"}`} />
-              0.00
+            {/* Wallet Balance - Simplified for Mobile */}
+            <div className={`flex items-center px-2 py-1.5 rounded-md text-sm font-semibold ${mode === "dark" ? "bg-[#1E1F24] text-gray-200" : "bg-gray-100 text-gray-800"}`}>
+              <div className="mr-1.5 flex items-center justify-center">
+                <WalletIcon />
+              </div>
+              <span>0.00</span>
             </div>
 
-            {/* Icon Set */}
-            <div className="flex items-center gap-5">
-              <FiZap
+            {/* Icon Set - Responsive Visibility */}
+            <div className="flex items-center gap-3 sm:gap-5">
+              <PositionsIcon
                 onClick={() => navigate("/algohub/trading-bot/", { state: { activeSection: "Positions" } })}
                 className="cursor-pointer text-lg hover:text-orange-400 transition-colors"
               />
-              <FiHelpCircle className="cursor-pointer text-lg hover:text-orange-400 transition-colors" />
-              <FiBell
-                onClick={() => { setShowNotifications(true); setShowProfileDropdown(false); setShowSettings(false); setShowGridMenu(false); }}
-                className={`cursor-pointer text-lg hover:text-orange-400 transition-colors ${showNotifications ? "text-orange-400" : ""}`}
+              <SupportIcon 
+                onClick={() => navigate("/support")}
+                className="cursor-pointer text-lg hover:text-orange-400 transition-colors" 
               />
               
               <div className="relative">
@@ -297,10 +376,9 @@ export default function Navbar() {
                 />
                 {showProfileDropdown && (
                   <>
-                    {/* Transparent overlay to close dropdown on click outside */}
                     <div className="fixed inset-0 z-[90]" onClick={() => setShowProfileDropdown(false)} />
-                    
                     <div className={`absolute top-12 right-0 w-80 rounded-lg shadow-2xl border z-[100] overflow-hidden ${mode === "dark" ? "bg-[#1E1F24] border-gray-700 text-white" : "bg-white border-gray-200 text-black"}`}>
+                      {/* ... rest of your profile dropdown content ... */}
                       <div className={`p-4 border-b ${mode === "dark" ? "border-gray-700" : "border-gray-100"}`}>
                         <div className="flex items-center justify-between mb-2">
                           <div className="flex items-center gap-1 cursor-pointer group">
@@ -344,36 +422,108 @@ export default function Navbar() {
                   </>
                 )}
               </div>
-              
-              <FiSettings
-                onClick={() => { setShowSettings(true); setShowProfileDropdown(false); setShowNotifications(false); setShowGridMenu(false); }}
-                className={`cursor-pointer text-lg hover:text-orange-400 transition-colors ${showSettings ? "text-orange-400" : ""}`}
-              />
-              
-              <FiGrid
-                onClick={() => { setShowGridMenu(true); setShowProfileDropdown(false); setShowNotifications(false); setShowSettings(false); }}
-                className={`cursor-pointer text-lg hover:text-orange-400 transition-colors ${showGridMenu ? "text-orange-400" : ""}`}
-              />
-            </div>
-          </div>
 
-          {/* Mobile Toggle */}
-          <button className="lg:hidden flex flex-col justify-between w-6 h-4" onClick={() => setIsOpen(!isOpen)}>
-            <span className={`block w-full h-0.5 ${mode === "dark" ? "bg-white" : "bg-black"}`}></span>
-            <span className={`block w-full h-0.5 ${mode === "dark" ? "bg-white" : "bg-black"}`}></span>
-            <span className={`block w-full h-0.5 ${mode === "dark" ? "bg-white" : "bg-black"}`}></span>
-          </button>
+              {/* Only show these on desktop or larger screens */}
+              <div className="hidden lg:flex items-center gap-5">
+                <FiSettings
+                  onClick={() => { setShowSettings(true); setShowProfileDropdown(false); setShowNotifications(false); setShowGridMenu(false); }}
+                  className={`cursor-pointer text-lg hover:text-orange-400 transition-colors ${showSettings ? "text-orange-400" : ""}`}
+                />
+                <FiBell
+                  onClick={() => { setShowNotifications(true); setShowProfileDropdown(false); setShowSettings(false); setShowGridMenu(false); }}
+                  className={`cursor-pointer text-lg hover:text-orange-400 transition-colors ${showNotifications ? "text-orange-400" : ""}`}
+                />
+                <FiGrid
+                  onClick={() => { setShowGridMenu(true); setShowProfileDropdown(false); setShowNotifications(false); setShowSettings(false); }}
+                  className={`cursor-pointer text-lg hover:text-orange-400 transition-colors ${showGridMenu ? "text-orange-400" : ""}`}
+                />
+              </div>
+            </div>
+
+            {/* Hamburger Icon for Mobile */}
+            <HamburgerIcon 
+              className="lg:hidden cursor-pointer text-2xl hover:text-orange-400 transition-colors"
+              onClick={() => setIsOpen(!isOpen)}
+            />
+          </div>
         </div>
       </div>
 
-      {/* MOBILE MENU */}
-      {isOpen && (
-        <div className={`lg:hidden px-4 py-3 flex flex-col gap-3 border-t ${mode === "dark" ? "bg-[#1E1F24] border-gray-700" : "bg-gray-100 border-gray-300"}`}>
-          {menuItems.map((item, idx) => (
-            <NavLink key={idx} to={item.to} className="text-sm cursor-pointer hover:text-orange-400" onClick={() => setIsOpen(false)}>{item.label}</NavLink>
-          ))}
+      {/* MOBILE MENU - Premium Side Drawer as per Mockup */}
+      <div className={`fixed inset-0 z-[200] lg:hidden transition-all duration-300 ${isOpen ? "opacity-100 pointer-events-auto" : "opacity-0 pointer-events-none"}`}>
+        {/* Backdrop */}
+        <div className="absolute inset-0 bg-black/40 backdrop-blur-xs" onClick={() => setIsOpen(false)} />
+        
+        {/* Drawer Content */}
+        <div className={`absolute top-0 right-0 h-full w-[85%] sm:w-[320px] shadow-2xl transition-transform duration-300 transform ${isOpen ? "translate-x-0" : "translate-x-full"} ${mode === "dark" ? "bg-[#15161B] text-white" : "bg-white text-black"}`}>
+          {/* Menu Header with close button */}
+          <div className={`p-4 flex items-center justify-end ${mode === "dark" ? "border-gray-800" : "border-gray-100"}`}>
+            <FiX className="text-2xl cursor-pointer hover:text-orange-500 transition-colors" onClick={() => setIsOpen(false)} />
+          </div>
+          
+          <div className="px-5 pb-10 overflow-y-auto h-[calc(100%-60px)] no-scrollbar">
+            {/* Add Funds Button */}
+            <div className="mb-8">
+              <button 
+                onClick={() => { navigate("/algohub/trading-bot/", { state: { activeSection: "Add Funds" } }); setIsOpen(false); }}
+                className="w-full bg-[#FF6A00] hover:bg-[#E55F00] text-white py-4 rounded-md font-bold text-xl shadow-lg transition-all"
+              >
+                Add Funds
+              </button>
+            </div>
+
+            {/* Navigation Items */}
+            <div className="space-y-1">
+              {mobileNavItems.map((item, idx) => (
+                <div key={idx} className="group">
+                  {item.isTheme ? (
+                    <div className="flex items-center justify-between py-2.5">
+                      <div className="flex items-center gap-4">
+                        <span className={`text-[20px] ${mode === "dark" ? "text-gray-400" : "text-gray-600"}`}>
+                          {item.icon}
+                        </span>
+                        <span className={`text-[16px] font-bold ${mode === "dark" ? "text-gray-100" : "text-gray-900"}`}>
+                          {item.label}
+                        </span>
+                      </div>
+                      <div className={`flex items-center rounded-lg p-0.5 ${mode === "dark" ? "bg-gray-800" : "bg-gray-100"}`}>
+                        <div 
+                          onClick={() => toggleMode()} 
+                          className={`p-1.5 rounded-md cursor-pointer transition-all ${mode === "light" ? "bg-orange-500 text-white" : "text-gray-500 hover:text-gray-300"}`}
+                        >
+                          <FaSun size={12} />
+                        </div>
+                        <div 
+                          onClick={() => toggleMode()} 
+                          className={`p-1.5 rounded-md cursor-pointer transition-all ${mode === "dark" ? "bg-gray-700 text-white" : "text-gray-400 hover:text-gray-600"}`}
+                        >
+                          <FaMoon size={12} />
+                        </div>
+                      </div>
+                    </div>
+                  ) : (
+                    <NavLink 
+                      to={item.to || "#"} 
+                      className={({ isActive }) => `flex items-center justify-between py-2.5 rounded-lg transition-all ${isActive ? "text-orange-500" : ""}`}
+                      onClick={() => !item.hasDropdown && setIsOpen(false)}
+                    >
+                      <div className="flex items-center gap-4">
+                        <span className={`text-[20px] ${mode === "dark" ? "text-gray-400" : "text-gray-600"}`}>
+                          {item.icon}
+                        </span>
+                        <span className={`text-[16px] font-bold ${mode === "dark" ? "text-gray-100" : "text-gray-900"}`}>
+                          {item.label}
+                        </span>
+                      </div>
+                      {item.hasDropdown && <FiChevronDown className="text-lg opacity-60" />}
+                    </NavLink>
+                  )}
+                </div>
+              ))}
+            </div>
+          </div>
         </div>
-      )}
+      </div>
 
       {/* SIDEBARS / DRAWERS */}
       {showNotifications && (

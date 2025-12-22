@@ -1,5 +1,5 @@
 import { useRef, useContext } from "react";
-import Mycontext from "../Context/Mycontext";
+import Mycontext from "../../context/Mycontext";
 import { FaChevronLeft, FaChevronRight, FaBitcoin } from "react-icons/fa";
 import { SiEthereum } from "react-icons/si";
 

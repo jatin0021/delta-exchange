@@ -1,5 +1,5 @@
 import React, { useContext, useState } from "react";
-import MyContext from "../../Context/Mycontext";
+import MyContext from "../../context/Mycontext";
 import { FiEye, FiEyeOff } from "react-icons/fi";
 
 const Referral = () => {
