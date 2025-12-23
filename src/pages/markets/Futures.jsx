@@ -125,11 +125,11 @@ const CryptoTable = ({ mode }) => {
 
   return (
     <div
-      className={`w-full px-4 md:px-6 lg:px-8 py-4 rounded-md border ${containerClasses}`}
+      className={`w-full px-4 md:px-6 lg:px-8 pb-4 pt-0 rounded-none md:rounded-md border-0 md:border ${containerClasses}`}
     >
       {/* Tabs */}
       <div
-        className={`flex flex-wrap gap-2 mb-4 border-b pb-2 overflow-x-auto ${
+        className={`flex flex-nowrap gap-2 mb-4 mt-2 border-b pb-3 overflow-x-auto no-scrollbar ${
           isDark ? "border-gray-700" : "border-gray-200"
         }`}
       >
@@ -137,14 +137,12 @@ const CryptoTable = ({ mode }) => {
           <button
             key={tab}
             onClick={() => setActiveTab(tab)}
-            className={`px-3 py-1 text-sm rounded-md whitespace-nowrap transition ${
+            className={`px-4 py-2 text-xs font-bold rounded-sm whitespace-nowrap transition border ${
               tab === activeTab
-                ? isDark
-                  ? "bg-orange-900 text-orange-400 font-semibold"
-                  : "bg-orange-100 text-orange-600 font-semibold"
+                ? "border-orange-500 text-orange-500 bg-transparent"
                 : isDark
-                ? "text-gray-400 hover:text-orange-400"
-                : "text-gray-500 hover:text-orange-600"
+                ? "bg-gray-800/50 border-transparent text-gray-400"
+                : "bg-gray-100 border-transparent text-gray-400"
             }`}
           >
             {tab}
@@ -152,12 +150,11 @@ const CryptoTable = ({ mode }) => {
         ))}
       </div>
 
-      {/* Table Container */}
+      {/* Table Container with Horizontal Scroll */}
       <div className="overflow-x-auto -mx-4 md:mx-0">
-        <table className={`w-full text-sm border-collapse md:border ${borderColor}`}>
+        <table className={`w-full text-sm border-collapse md:border ${borderColor} min-w-[1000px]`}>
           <thead className={`${tableHeaderClasses} uppercase text-xs`}>
-            {/* Desktop Header */}
-            <tr className="hidden md:table-row">
+            <tr>
               <th className="text-left px-3 py-2">Contract</th>
               <th className="text-left px-3 py-2">Description</th>
               <th className="text-left px-3 py-2">Last Price</th>
@@ -167,103 +164,60 @@ const CryptoTable = ({ mode }) => {
               <th className="text-left px-3 py-2">24h Prices</th>
               <th className="text-left px-3 py-2">Funding</th>
             </tr>
-            {/* Mobile Header */}
-            <tr className="md:hidden border-b border-gray-700">
-              <th className="text-left px-4 py-3 font-semibold w-1/3">Name</th>
-              <th className="text-center px-4 py-3 font-semibold w-1/3">Last Price / Vol.</th>
-              <th className="text-right px-4 py-3 font-semibold w-1/3">24h Chg.</th>
-            </tr>
           </thead>
           <tbody className="divide-y divide-gray-800/50 dark:divide-gray-700/30">
             {filteredData.length > 0 ? (
               filteredData.map((item, i) => (
-                <React.Fragment key={i}>
-                  {/* Desktop Row */}
-                  <tr
-                    onClick={() => navigate('/chart/', { state: { symbol: item.contract } })}
-                    onKeyDown={(e) => { if (e.key === 'Enter') navigate('/chart/', { state: { symbol: item.contract } }); }}
-                    tabIndex={0}
-                    role="button"
-                    className={`hidden md:table-row border-t ${borderColor} ${tableRowHover} transition duration-150 cursor-pointer`}
+                <tr
+                  key={i}
+                  onClick={() => navigate('/chart/', { state: { symbol: item.contract } })}
+                  onKeyDown={(e) => { if (e.key === 'Enter') navigate('/chart/', { state: { symbol: item.contract } }); }}
+                  tabIndex={0}
+                  role="button"
+                  className={`border-t ${borderColor} ${tableRowHover} transition duration-150 cursor-pointer`}
+                >
+                  <td className="px-3 py-2 font-semibold">{item.contract}</td>
+                  <td className="px-3 py-2">
+                    <div className="flex items-center gap-2">
+                      <span>{item.description}</span>
+                      <span
+                        className={`text-xs px-1.5 py-0.5 rounded ${
+                          isDark
+                            ? "bg-orange-900 text-orange-400"
+                            : "bg-orange-100 text-orange-600"
+                        }`}
+                      >
+                        {item.leverage}
+                      </span>
+                    </div>
+                  </td>
+                  <td className="px-3 py-2">{item.lastPrice}</td>
+                  <td
+                    className={`px-3 py-2 font-medium ${
+                      item.changePositive ? "text-green-500" : "text-red-500"
+                    }`}
                   >
-                    <td className="px-3 py-2 font-semibold">{item.contract}</td>
-                    <td className="px-3 py-2">
-                      <div className="flex items-center gap-2">
-                        <span>{item.description}</span>
-                        <span
-                          className={`text-xs px-1.5 py-0.5 rounded ${
-                            isDark
-                              ? "bg-orange-900 text-orange-400"
-                              : "bg-orange-100 text-orange-600"
-                          }`}
-                        >
-                          {item.leverage}
-                        </span>
-                      </div>
-                    </td>
-                    <td className="px-3 py-2">{item.lastPrice}</td>
-                    <td
-                      className={`px-3 py-2 font-medium ${
-                        item.changePositive ? "text-green-500" : "text-red-500"
-                      }`}
-                    >
-                      {item.change}
-                    </td>
-                    <td className="px-3 py-2">{item.volume}</td>
-                    <td className="px-3 py-2">{item.openInterest}</td>
-                    <td className="px-3 py-2">
-                      <div>
-                        <span className="font-semibold">High:</span> {item.high}
-                        <br />
-                        <span className="font-semibold">Low:</span> {item.low}
-                      </div>
-                    </td>
-                    <td
-                      className={`px-3 py-2 font-medium ${
-                        item.funding.startsWith("-")
-                          ? "text-red-500"
-                          : "text-green-500"
-                      }`}
-                    >
-                      {item.funding}
-                    </td>
-                  </tr>
-
-                  {/* Mobile Row (Stacked Layout) */}
-                  <tr
-                    onClick={() => navigate('/chart/', { state: { symbol: item.contract } })}
-                    className={`md:hidden cursor-pointer active:bg-gray-800/10 transition-colors ${i % 2 === 0 ? (isDark ? 'bg-transparent' : 'bg-white') : (isDark ? 'bg-gray-900/10' : 'bg-gray-50/50')}`}
+                    {item.change}
+                  </td>
+                  <td className="px-3 py-2">{item.volume}</td>
+                  <td className="px-3 py-2">{item.openInterest}</td>
+                  <td className="px-3 py-2">
+                    <div>
+                      <span className="font-semibold">High:</span> {item.high}
+                      <br />
+                      <span className="font-semibold">Low:</span> {item.low}
+                    </div>
+                  </td>
+                  <td
+                    className={`px-3 py-2 font-medium ${
+                      item.funding.startsWith("-")
+                        ? "text-red-500"
+                        : "text-green-500"
+                    }`}
                   >
-                    <td className="px-4 py-4 align-top">
-                      <div className="flex flex-col gap-1">
-                        <div className="flex items-center gap-2">
-                          <span className="font-bold text-base tracking-tight">{item.contract}</span>
-                          <span className={`text-[9px] px-1.5 py-0.5 rounded font-bold ${isDark ? "bg-orange-950/50 text-orange-400" : "bg-orange-50 text-orange-600"}`}>
-                            {item.leverage}
-                          </span>
-                        </div>
-                        <span className="text-[10px] text-gray-500 font-medium truncate max-w-[80px]">{item.description}</span>
-                      </div>
-                    </td>
-                    <td className="px-4 py-4 text-center align-top">
-                      <div className="flex flex-col gap-0.5">
-                        <span className="font-bold text-[15px]">{item.lastPrice}</span>
-                        <span className="text-[11px] text-gray-500 font-medium">{item.volume}</span>
-                      </div>
-                    </td>
-                    <td className="px-4 py-4 text-right align-top">
-                      <div className="flex flex-col items-end gap-1">
-                        <span className={`text-[15px] font-bold ${item.changePositive ? "text-green-500" : "text-red-500"}`}>
-                          {item.changePositive ? `+${item.change.replace('+','')}` : item.change}
-                        </span>
-                        {/* Optional Sparkline Placeholder or Funding */}
-                        <span className={`text-[10px] ${item.funding.startsWith("-") ? "text-red-400/70" : "text-green-400/70"}`}>
-                          {item.funding}
-                        </span>
-                      </div>
-                    </td>
-                  </tr>
-                </React.Fragment>
+                    {item.funding}
+                  </td>
+                </tr>
               ))
             ) : (
               <tr>

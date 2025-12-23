@@ -3,7 +3,7 @@ import Mycontext from "../../context/Mycontext";
 import { DeltaLogo } from "./DeltaLogo";
 import { FiChevronDown, FiChevronRight } from "react-icons/fi";
 import { FaTwitter, FaInstagram, FaYoutube, FaLinkedin } from "react-icons/fa";
-
+import { FaXTwitter } from "react-icons/fa6";
 
 export default function Footer() {
   const { mode } = useContext(Mycontext);
@@ -48,11 +48,11 @@ export default function Footer() {
     },
   ];
 
-  const socialLinks = [
-    { icon: <FaTwitter />, href: "https://x.com/Delta_Exchange" },
-    { icon: <FaInstagram />, href: "https://www.instagram.com/deltaexchangein" },
-    { icon: <FaYoutube />, href: "https://www.youtube.com/@deltaexchange" },
-    { icon: <FaLinkedin />, href: "https://www.linkedin.com/company/delta-exchange/" },
+  const socials = [
+    { name: "X", icon: <FaXTwitter />, href: "https://x.com/Delta_Exchange" },
+    { name: "Instagram", icon: <FaInstagram />, href: "https://www.instagram.com/deltaexchangein" },
+    { name: "Youtube", icon: <FaYoutube />, href: "https://www.youtube.com/channel/UCaw-1cUd74wvEatvZna0TzQ" },
+    { name: "Linkedin", icon: <FaLinkedin />, href: "https://www.linkedin.com/company/delta-exchange/" },
   ];
 
   return (
@@ -63,14 +63,14 @@ export default function Footer() {
           : "bg-[#f3f4f6] text-slate-500 border-gray-200"
       }`}
     >
-      <div className="max-w-[1440px] mx-auto px-6 md:px-12 py-4 lg:py-10">
-        <div className="flex flex-col lg:flex-row gap-6 lg:gap-24">
+      <div className="max-w-[1440px] mx-auto px-8 md:px-16 lg:px-32 py-6 lg:py-8">
+        <div className="flex flex-col lg:flex-row gap-10 lg:gap-24">
           
           {/* LEFT: Logo & Description */}
-          <div className="flex flex-col max-w-lg lg:w-[400px]">
+          <div className="lg:w-[320px] flex flex-col gap-3">
             <DeltaLogo className={mode === "dark" ? "text-white" : "text-black"} />
             
-            <p className={`text-[15px] md:text-base leading-relaxed mt-4 lg:mt-8 font-medium ${
+            <p className={`text-[15px] leading-relaxed font-medium ${
               mode === "dark" ? "text-gray-400" : "text-slate-500"
             }`}>
               Delta Exchange India is operated by Excelium Technologies Private Limited, a{" "}
@@ -81,32 +81,32 @@ export default function Footer() {
             </p>
           </div>
 
-          {/* RIGHT: Sections */}
-          <div className="flex-1">
-            <div className="flex flex-col lg:flex-row lg:justify-between gap-0 lg:gap-8">
+          {/* RIGHT: Links Sections Grid */}
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8 lg:gap-12 text-left">
+              {/* Columns for Links */}
               {footerLinks.map((section, idx) => (
-                <div key={idx} className="lg:pb-0">
+                <div key={idx} className="w-full">
                   {/* Desktop Title */}
-                  <h4 className={`hidden lg:block font-bold mb-8 text-[16px] tracking-tight ${
+                  <h4 className={`hidden lg:block font-bold mb-3 text-[17px] tracking-tight ${
                     mode === "dark" ? "text-white" : "text-[#0F172A]"
                   }`}>
                     {section.title}
                   </h4>
 
-                  {/* Mobile Header */}
+                  {/* Mobile Accordion Header */}
                   <div 
                     onClick={() => toggleSection(section.title)}
-                    className="lg:hidden flex items-center justify-between py-2 cursor-pointer"
+                    className="lg:hidden flex items-center justify-between py-2 border-b border-gray-700/50 cursor-pointer"
                   >
                     <span className={`text-[17px] font-bold ${mode === "dark" ? "text-white" : "text-[#0F172A]"}`}>
                       {section.title}
                     </span>
-                    <FiChevronRight className={`text-xl transition-transform duration-300 ${openSections[section.title] ? "rotate-90" : ""} ${mode === "dark" ? "text-gray-600" : "text-slate-400"}`} />
+                    <FiChevronRight className={`text-lg transition-transform duration-300 ${openSections[section.title] ? "rotate-90" : ""} ${mode === "dark" ? "text-gray-500" : "text-slate-400"}`} />
                   </div>
 
-                  {/* Links */}
-                  <ul className={`space-y-5 lg:space-y-4 transition-all duration-300 overflow-hidden ${
-                    openSections[section.title] ? "max-h-96 py-6 opacity-100" : "max-h-0 lg:max-h-none opacity-0 lg:opacity-100"
+                  {/* Links List */}
+                  <ul className={`flex flex-col gap-1.5 transition-all duration-300 overflow-hidden ${
+                    openSections[section.title] ? "max-h-96 py-2 opacity-100" : "max-h-0 lg:max-h-none opacity-0 lg:opacity-100"
                   }`}>
                     {section.links.map((link, lIdx) => (
                       <li key={lIdx}>
@@ -114,7 +114,7 @@ export default function Footer() {
                           href={link.href} 
                           target="_blank" 
                           rel="noreferrer" 
-                          className={`text-[15px] transition-colors hover:text-orange-500 font-medium ${
+                          className={`text-[15px] hover:text-orange-500 transition-colors font-medium ${
                             mode === "dark" ? "text-gray-400" : "text-slate-500"
                           }`}
                         >
@@ -125,45 +125,59 @@ export default function Footer() {
                   </ul>
                 </div>
               ))}
-            </div>
 
-            {/* Socials - Moved after dropdowns */}
-            <div className="mt-4 lg:mt-6 order-last">
-              <h4 className={`text-[15px] font-semibold mb-4 ${
-                mode === "dark" ? "text-gray-500" : "text-slate-400"
-              }`}>Socials</h4>
-              <div className="flex items-center gap-5">
-                {socialLinks.map((social, i) => (
-                  <a 
-                    key={i} 
-                    href={social.href} 
-                    target="_blank" 
-                    rel="noreferrer" 
-                    className={`w-11 h-11 flex items-center justify-center rounded-full text-xl transition-all ${
-                      mode === "dark" 
-                        ? "bg-[#1E2026] text-gray-300 hover:bg-orange-500 hover:text-white" 
-                        : "bg-[#E2E8F0] text-[#0F172A] hover:bg-orange-500 hover:text-white"
-                    }`}
+              {/* Annual Socials Column */}
+              <div className="w-full">
+                 <h4 className={`hidden lg:block font-bold mb-3 text-[17px] tracking-tight ${
+                    mode === "dark" ? "text-white" : "text-[#0F172A]"
+                  }`}>
+                    Socials
+                  </h4>
+
+                  {/* Mobile Accordion Header for Socials */}
+                  <div 
+                    onClick={() => toggleSection("Socials")}
+                    className="lg:hidden flex items-center justify-between py-2 border-b border-gray-700/50 cursor-pointer"
                   >
-                    {social.icon}
-                  </a>
-                ))}
+                    <span className={`text-[17px] font-bold ${mode === "dark" ? "text-white" : "text-[#0F172A]"}`}>
+                      Socials
+                    </span>
+                    <FiChevronRight className={`text-lg transition-transform duration-300 ${openSections["Socials"] ? "rotate-90" : ""} ${mode === "dark" ? "text-gray-500" : "text-slate-400"}`} />
+                  </div>
+
+                  <div className={`flex flex-col gap-2 transition-all duration-300 overflow-hidden ${
+                    openSections["Socials"] ? "max-h-96 py-2 opacity-100" : "max-h-0 lg:max-h-none opacity-0 lg:opacity-100"
+                  }`}>
+                    {socials.map((social, i) => (
+                      <a
+                        key={i}
+                        href={social.href}
+                        target="_blank"
+                        rel="noreferrer"
+                        className={`flex items-center gap-2 text-[15px] font-medium transition-colors hover:text-orange-500 ${
+                           mode === "dark" ? "text-gray-400" : "text-slate-500"
+                        }`}
+                      >
+                        <span className={`w-7 h-7 flex items-center justify-center rounded-full text-sm ${
+                          mode === "dark" ? "bg-[#1E2026] text-gray-300" : "bg-gray-200 text-gray-700"
+                        }`}>
+                          {social.icon}
+                        </span>
+                        {social.name}
+                      </a>
+                    ))}
+                  </div>
               </div>
-            </div>
           </div>
         </div>
 
-        {/* Bottom Bar */}
-        <div className={`mt-8 pt-6 border-t flex flex-col md:flex-row justify-between items-center gap-4 ${
-          mode === "dark" ? "border-gray-800" : "border-gray-100"
+        {/* Bottom Copyright */}
+        <div className={`mt-2 pt-4 border-t text-center ${
+          mode === "dark" ? "border-gray-800" : "border-gray-300"
         }`}>
-          <p className={`text-[12px] font-medium ${mode === "dark" ? "text-gray-500" : "text-gray-400"}`}>
+          <p className={`text-[16px] font-medium ${mode === "dark" ? "text-gray-500" : "text-gray-500"}`}>
             Delta Exchange India © 2025. All Rights Reserved.
           </p>
-          <div className="flex gap-6 text-[11px] font-bold uppercase tracking-wider">
-            <a href="#" className="hover:text-orange-500 transition-colors">Platform Status</a>
-            <a href="#" className="hover:text-orange-500 transition-colors">Risk Disclosure</a>
-          </div>
         </div>
       </div>
     </footer>

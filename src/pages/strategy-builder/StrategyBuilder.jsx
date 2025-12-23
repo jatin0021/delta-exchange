@@ -11,10 +11,11 @@ import {
   ReferenceLine,
   Cell,
 } from "recharts";
+import TradingViewWidget from "../../components/TradingViewWidget";
 
 const StrategyBuilder = ({ mode }) => {
   const [activeView, setActiveView] = useState("chart");
-  const [activeChartTab, setActiveChartTab] = useState("open-interest");
+  const [activeChartTab, setActiveChartTab] = useState("price-chart");
   const [activeHoldingsTab, setActiveHoldingsTab] = useState("positions");
   const [selectedTimeframe, setSelectedTimeframe] = useState("D1");
 
@@ -149,6 +150,12 @@ const StrategyBuilder = ({ mode }) => {
     };
 
     switch (activeChartTab) {
+      case "price-chart":
+        return (
+          <div className="h-full w-full bg-[#15161b]">
+             <TradingViewWidget />
+          </div>
+        );
       case "open-interest":
         return (
           <div className="space-y-4">
@@ -490,7 +497,7 @@ const StrategyBuilder = ({ mode }) => {
         </div>
 
         {/* Main Content Area */}
-        <div className="flex overflow-hidden" style={{ height: "590px" }}>
+        <div className="flex overflow-hidden" style={{ height: "1000px" }}>
           {/* Left Section - Chart */}
           <div className="flex flex-col border-r h-full" style={{ width: "63.5%" }}>
             {/* Chart Tabs */}
@@ -499,6 +506,20 @@ const StrategyBuilder = ({ mode }) => {
                 mode === "dark" ? "bg-[#15161B] border-gray-700" : "bg-white border-gray-300"
               }`}
             >
+              <button
+                onClick={() => setActiveChartTab("price-chart")}
+                className={`px-3 py-1.5 text-sm rounded transition ${
+                  activeChartTab === "price-chart"
+                    ? mode === "dark"
+                      ? "bg-[#2A2B30] text-white border-b-2 border-orange-500"
+                      : "bg-gray-100 text-gray-900 border-b-2 border-orange-500"
+                    : mode === "dark"
+                    ? "text-gray-400 hover:text-gray-200"
+                    : "text-gray-600 hover:text-gray-900"
+                }`}
+              >
+                Price Chart
+              </button>
               <button
                 onClick={() => setActiveChartTab("open-interest")}
                 className={`px-3 py-1.5 text-sm rounded transition ${

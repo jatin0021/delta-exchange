@@ -22,7 +22,7 @@ const Watchlist = ({ mode }) => {
   return (
     <div className={`w-full h-full ${containerClasses}`}>
       <div className="overflow-x-auto mt-0">
-        <table className="w-full text-sm border-collapse">
+        <table className="w-full text-sm border-collapse min-w-[1000px]">
           <thead className={tableHeaderClasses}>
             <tr>
               {[
@@ -73,7 +73,7 @@ const Watchlist = ({ mode }) => {
                   onKeyDown={(e) => { if (e.key === 'Enter') navigate('/chart/', { state: { symbol: item.contract } }); }}
                   tabIndex={0}
                   role="button"
-                  className="border-b border-gray-700 cursor-pointer"
+                  className="border-b border-gray-700 cursor-pointer hover:opacity-80"
                 >
                   <td className="px-4 py-2">{item.contract}</td>
                   <td className="px-4 py-2">{item.description}</td>

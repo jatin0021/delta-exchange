@@ -84,7 +84,7 @@ const Straddle = ({ mode }) => {
   return (
     <div className={`w-full h-full ${containerClasses}`}>
       <div className="overflow-x-auto">
-        <table className="w-full text-sm border-collapse">
+        <table className="w-full text-sm border-collapse min-w-[1000px]">
           <thead className={tableHeaderClasses}>
             <tr>
               {[

@@ -2,6 +2,7 @@ import { useState, useContext } from "react";
 import { NavLink, useNavigate } from "react-router-dom";
 import Mycontext from "../../context/Mycontext";
 import { DeltaLogo } from "./DeltaLogo";
+import { MobileNavDrawer } from "./MobileNavDrawer";
 import {
   FiSearch,
   FiBell,
@@ -38,6 +39,7 @@ import { BsCurrencyRupee, BsBank } from "react-icons/bs";
 import { FaSun, FaMoon, FaRobot, FaDatabase } from "react-icons/fa";
 import { RiArrowDropDownLine } from "react-icons/ri";
 import { MdOutlineVerifiedUser } from "react-icons/md";
+import { HiOutlineArrowPath } from "react-icons/hi2";
 
 const WalletIcon = () => (
   <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -125,10 +127,10 @@ export default function Navbar() {
 
   const menuItems = [
     { label: "Markets", to: "/markets/" },
-    { label: "Futures", to: "/markets/futures" },
-    { label: "Options", to: "/markets/options" },
-    { label: "Straddle", to: "/markets/straddle" },
-    { label: "Trackers", to: "/markets/trackers" },
+    { label: "Futures", to: "/chart/" },
+    { label: "Options", to: "/more/strategy-builder" },
+    { label: "Straddle", to: "/chart/" },
+    { label: "Trackers", to: "/chart/" },
     { label: "AlgoHub", to: "/algohub/", hasDropdown: true },
     { label: "More", to: "/more/", hasDropdown: true },
   ];
@@ -206,21 +208,6 @@ export default function Navbar() {
     { icon: <FiFileText className="text-indigo-500" />, title: "Transaction Logs", to: "/algohub/trading-bot/", section: "Trxn. Logs" },
     { icon: <FiTrash2 className="text-gray-400" />, title: "Clear Cache", action: () => alert("Cache cleared!") },
     { icon: <FiLogOut className="text-gray-600" />, title: "Logout", to: "/logout" },
-  ];
-
-  const mobileNavItems = [
-    { label: "Markets", to: "/markets/", icon: <FiBarChart2 className="text-gray-500" /> },
-    { label: "Futures", to: "/markets/futures", icon: <FiZap className="text-orange-400" /> },
-    { label: "Options", to: "/markets/options", icon: <FiGrid className="text-gray-500" /> },
-    { label: "Straddle", to: "/markets/straddle", icon: <FiLink className="text-gray-500" /> },
-    { label: "Trackers", to: "/markets/trackers", icon: <FiRefreshCw className="text-orange-400" /> },
-    { label: "APIs", to: "/algohub/apis", icon: <FiLink className="text-orange-400" /> },
-    { label: "Offers", to: "/offers", icon: <FiGift className="text-orange-400" /> },
-    { label: "Support", to: "/support", icon: <FiHeadphones className="text-orange-500" />, hasDropdown: true },
-    { label: "Resources", to: "/resources", icon: <FiHexagon className="text-orange-400" />, hasDropdown: true },
-    { label: "Theme", isTheme: true, icon: <FiDroplet className="text-orange-400" /> },
-    { label: "Download App", to: "/download", icon: <FiSmartphone className="text-orange-400" />, hasDropdown: true },
-    { label: "Logout", to: "/logout", icon: <FiLogOut className="text-orange-400" /> },
   ];
 
   return (
@@ -332,8 +319,8 @@ export default function Navbar() {
         </div>
 
         {/* RIGHT: Search + Other Actions */}
-        <div className="flex items-center gap-10">
-          {/* Search Bar */}
+        <div className="flex items-center gap-2 sm:gap-4 md:gap-10">
+          {/* Search Bar - Desktop Only */}
           <div className={`hidden md:flex items-center px-4 py-1.5 rounded-md w-64 ${mode === "dark" ? "bg-[#1E1F24]" : "bg-[#F0F2F5]"}`}>
             <FiSearch className={`text-base ${mode === "dark" ? "text-gray-400" : "text-gray-500"}`} />
             <input
@@ -344,7 +331,8 @@ export default function Navbar() {
             <span className="text-[11px] text-gray-500 font-medium ml-2">/</span>
           </div>
 
-          <div className="flex items-center gap-3 md:gap-6">
+          <div className="flex items-center gap-2.5 sm:gap-4 md:gap-6">
+            {/* Add Funds - Desktop only */}
             <button
               onClick={() => navigate("/algohub/trading-bot/", { state: { activeSection: "Add Funds" } })}
               className="hidden lg:flex items-center bg-orange-600 hover:bg-orange-700 text-white px-5 py-2 rounded-md text-sm font-bold shadow-md transition-all"
@@ -352,81 +340,152 @@ export default function Navbar() {
               Add Funds
             </button>
 
-            {/* Wallet Balance - Simplified for Mobile */}
-            <div className={`flex items-center px-2 py-1.5 rounded-md text-sm font-semibold ${mode === "dark" ? "bg-[#1E1F24] text-gray-200" : "bg-gray-100 text-gray-800"}`}>
-              <div className="mr-1.5 flex items-center justify-center">
-                <WalletIcon />
+            {/* Wallet Balance - Unified Design */}
+            <div className={`flex items-center gap-1.5 px-2 py-1 rounded-full text-[13px] font-bold transition-all h-8 sm:h-9 ${
+              mode === "dark" ? "bg-gray-800 text-green-400" : "bg-gray-50 text-green-600 border border-gray-100 shadow-sm"
+            }`}>
+              <div className="w-5 h-5 rounded-full bg-green-500/20 flex items-center justify-center text-green-500 border border-green-500/30 text-[10px] shrink-0 font-black">
+                ₹
               </div>
               <span>0.00</span>
             </div>
 
-            {/* Icon Set - Responsive Visibility */}
-            <div className="flex items-center gap-3 sm:gap-5">
-              <PositionsIcon
-                onClick={() => navigate("/algohub/trading-bot/", { state: { activeSection: "Positions" } })}
-                className="cursor-pointer text-lg hover:text-orange-400 transition-colors"
-              />
-              <SupportIcon 
-                onClick={() => navigate("/support")}
-                className="cursor-pointer text-lg hover:text-orange-400 transition-colors" 
-              />
-              
-              <div className="relative">
-                <FiUser
-                  onClick={() => { setShowProfileDropdown(!showProfileDropdown); setShowNotifications(false); setShowSettings(false); setShowGridMenu(false); }}
-                  className={`cursor-pointer text-lg hover:text-orange-400 transition-colors ${showProfileDropdown ? "text-orange-400" : ""}`}
+            {/* Icons Container */}
+            <div className="flex items-center gap-3.5 sm:gap-5">
+              {/* MOBILE ONLY ICONS */}
+              <div className="lg:hidden flex items-center gap-3.5 text-gray-400">
+                <HiOutlineArrowPath 
+                  className="text-[19px] cursor-pointer hover:text-orange-500 transition-colors active:rotate-180 duration-500" 
+                  onClick={() => {
+                    // Simple logic to simulate refresh
+                    const btn = document.activeElement;
+                    if(btn) btn.classList.add('rotate-180');
+                    setTimeout(() => { if(btn) btn.classList.remove('rotate-180'); }, 500);
+                  }}
                 />
-                {showProfileDropdown && (
-                  <>
-                    <div className="fixed inset-0 z-[90]" onClick={() => setShowProfileDropdown(false)} />
-                    <div className={`absolute top-12 right-0 w-80 rounded-lg shadow-2xl border z-[100] overflow-hidden ${mode === "dark" ? "bg-[#1E1F24] border-gray-700 text-white" : "bg-white border-gray-200 text-black"}`}>
-                      {/* ... rest of your profile dropdown content ... */}
-                      <div className={`p-4 border-b ${mode === "dark" ? "border-gray-700" : "border-gray-100"}`}>
-                        <div className="flex items-center justify-between mb-2">
-                          <div className="flex items-center gap-1 cursor-pointer group">
-                            <span className="font-bold text-[15px]">lo***@***.com</span>
-                            <FiChevronRight className="text-gray-400 group-hover:translate-x-1 transition-transform" />
-                          </div>
-                          <button className="bg-[#FFC107] hover:bg-[#FFB300] text-black text-[10px] font-bold px-2 py-1 rounded flex items-center gap-1 shadow-sm">
-                            <MdOutlineVerifiedUser className="text-sm" />GET VERIFIED
-                          </button>
-                        </div>
-                        <div className="space-y-1.5">
-                          <p className={`text-[12px] ${mode === "dark" ? "text-gray-400" : "text-gray-500"}`}>User ID : <span className={mode === "dark" ? "text-gray-200" : "text-gray-700 font-medium"}>76249808</span></p>
-                          <p className={`text-[12px] ${mode === "dark" ? "text-gray-400" : "text-gray-500"}`}>Account <span className={`ml-2 font-semibold ${mode === "dark" ? "text-white" : "text-black"}`}>Main</span></p>
-                        </div>
-                      </div>
-                      <div className="py-2">
-                        {profileDropdownItems.map((item, idx) => (
-                          <div 
-                            key={idx} 
-                            onClick={() => { 
-                              if (item.action) item.action(); 
-                              else if (item.section) navigate(item.to, { state: { activeSection: item.section } }); 
-                              else navigate(item.to); 
-                              setShowProfileDropdown(false); 
-                            }} 
-                            className={`flex items-center justify-between px-4 py-2.5 cursor-pointer transition-colors ${
-                              item.highlight 
-                                ? (mode === "dark" ? "bg-orange-500/10 hover:bg-orange-500/20" : "bg-orange-50 hover:bg-orange-100") 
-                                : (mode === "dark" ? "hover:bg-gray-800" : "hover:bg-gray-50")
-                            }`}
-                          >
-                            <div className="flex items-center gap-4">
-                              <span className="text-xl">{item.icon}</span>
-                              <span className={`text-[14.5px] font-medium ${item.highlight ? "text-orange-500" : ""}`}>{item.title}</span>
+                <FiHelpCircle className="text-[19px] cursor-pointer hover:text-orange-500 transition-colors" onClick={() => navigate("/support")} />
+                <div className="relative">
+                  <FiUser
+                    onClick={() => { setShowProfileDropdown(!showProfileDropdown); setShowNotifications(false); setShowSettings(false); setShowGridMenu(false); }}
+                    className={`cursor-pointer text-[19px] hover:text-orange-500 transition-colors ${showProfileDropdown ? "text-orange-500" : ""}`}
+                  />
+                  {showProfileDropdown && (
+                    <>
+                      <div className="fixed inset-0 z-[90]" onClick={() => setShowProfileDropdown(false)} />
+                      <div className={`absolute top-10 right-0 w-80 rounded-lg shadow-2xl border z-[100] overflow-hidden ${mode === "dark" ? "bg-[#1E1F24] border-gray-700 text-white" : "bg-white border-gray-200 text-black"}`}>
+                        <div className={`p-4 border-b ${mode === "dark" ? "border-gray-700" : "border-gray-100"}`}>
+                          <div className="flex items-center justify-between mb-2">
+                            <div className="flex items-center gap-1 cursor-pointer group">
+                              <span className="font-bold text-[15px]">lo***@***.com</span>
+                              <FiChevronRight className="text-gray-400 group-hover:translate-x-1 transition-transform" />
                             </div>
-                            {item.highlight && <FiChevronRight className="text-orange-500 text-lg" />}
+                            <button className="bg-[#FFC107] hover:bg-[#FFB300] text-black text-[10px] font-bold px-2 py-1 rounded flex items-center gap-1 shadow-sm">
+                              <MdOutlineVerifiedUser className="text-sm" />GET VERIFIED
+                            </button>
                           </div>
-                        ))}
+                          <div className="space-y-1.5">
+                            <p className={`text-[12px] ${mode === "dark" ? "text-gray-400" : "text-gray-500"}`}>User ID : <span className={mode === "dark" ? "text-gray-200" : "text-gray-700 font-medium"}>76249808</span></p>
+                            <p className={`text-[12px] ${mode === "dark" ? "text-gray-400" : "text-gray-500"}`}>Account <span className={`ml-2 font-semibold ${mode === "dark" ? "text-white" : "text-black"}`}>Main</span></p>
+                          </div>
+                        </div>
+                        <div className="py-2">
+                          {profileDropdownItems.map((item, idx) => (
+                            <div 
+                              key={idx} 
+                              onClick={() => { 
+                                if (item.action) item.action(); 
+                                else if (item.section) navigate(item.to, { state: { activeSection: item.section } }); 
+                                else navigate(item.to); 
+                                setShowProfileDropdown(false); 
+                              }} 
+                              className={`flex items-center justify-between px-4 py-2.5 cursor-pointer transition-colors ${
+                                item.highlight 
+                                  ? (mode === "dark" ? "bg-orange-500/10 hover:bg-orange-500/20" : "bg-orange-50 hover:bg-orange-100") 
+                                  : (mode === "dark" ? "hover:bg-gray-800" : "hover:bg-gray-50")
+                              }`}
+                            >
+                              <div className="flex items-center gap-4">
+                                <span className="text-xl">{item.icon}</span>
+                                <span className={`text-[14.5px] font-medium ${item.highlight ? "text-orange-500" : ""}`}>{item.title}</span>
+                              </div>
+                              {item.highlight && <FiChevronRight className="text-orange-500 text-lg" />}
+                            </div>
+                          ))}
+                        </div>
                       </div>
-                    </div>
-                  </>
-                )}
+                    </>
+                  )}
+                </div>
+                <HamburgerIcon 
+                  className="cursor-pointer text-[22px] hover:text-orange-500 transition-colors"
+                  onClick={() => setIsOpen(!isOpen)}
+                />
               </div>
 
-              {/* Only show these on desktop or larger screens */}
+              {/* DESKTOP ONLY ICONS */}
               <div className="hidden lg:flex items-center gap-5">
+                <PositionsIcon
+                  onClick={() => navigate("/algohub/trading-bot/", { state: { activeSection: "Positions" } })}
+                  className="cursor-pointer text-lg hover:text-orange-400 transition-colors"
+                />
+                <SupportIcon 
+                  onClick={() => navigate("/support")}
+                  className="cursor-pointer text-lg hover:text-orange-400 transition-colors" 
+                />
+                
+                <div className="relative">
+                  <FiUser
+                    onClick={() => { setShowProfileDropdown(!showProfileDropdown); setShowNotifications(false); setShowSettings(false); setShowGridMenu(false); }}
+                    className={`cursor-pointer text-lg hover:text-orange-400 transition-colors ${showProfileDropdown ? "text-orange-400" : ""}`}
+                  />
+                  {showProfileDropdown && (
+                    <>
+                      <div className="fixed inset-0 z-[90]" onClick={() => setShowProfileDropdown(false)} />
+                      <div className={`absolute top-12 right-0 w-80 rounded-lg shadow-2xl border z-[100] overflow-hidden ${mode === "dark" ? "bg-[#1E1F24] border-gray-700 text-white" : "bg-white border-gray-200 text-black"}`}>
+                        <div className={`p-4 border-b ${mode === "dark" ? "border-gray-700" : "border-gray-100"}`}>
+                          <div className="flex items-center justify-between mb-2">
+                            <div className="flex items-center gap-1 cursor-pointer group">
+                              <span className="font-bold text-[15px]">lo***@***.com</span>
+                              <FiChevronRight className="text-gray-400 group-hover:translate-x-1 transition-transform" />
+                            </div>
+                            <button className="bg-[#FFC107] hover:bg-[#FFB300] text-black text-[10px] font-bold px-2 py-1 rounded flex items-center gap-1 shadow-sm">
+                              <MdOutlineVerifiedUser className="text-sm" />GET VERIFIED
+                            </button>
+                          </div>
+                          <div className="space-y-1.5">
+                            <p className={`text-[12px] ${mode === "dark" ? "text-gray-400" : "text-gray-500"}`}>User ID : <span className={mode === "dark" ? "text-gray-200" : "text-gray-700 font-medium"}>76249808</span></p>
+                            <p className={`text-[12px] ${mode === "dark" ? "text-gray-400" : "text-gray-500"}`}>Account <span className={`ml-2 font-semibold ${mode === "dark" ? "text-white" : "text-black"}`}>Main</span></p>
+                          </div>
+                        </div>
+                        <div className="py-2">
+                          {profileDropdownItems.map((item, idx) => (
+                            <div 
+                              key={idx} 
+                              onClick={() => { 
+                                if (item.action) item.action(); 
+                                else if (item.section) navigate(item.to, { state: { activeSection: item.section } }); 
+                                else navigate(item.to); 
+                                setShowProfileDropdown(false); 
+                              }} 
+                              className={`flex items-center justify-between px-4 py-2.5 cursor-pointer transition-colors ${
+                                item.highlight 
+                                  ? (mode === "dark" ? "bg-orange-500/10 hover:bg-orange-500/20" : "bg-orange-50 hover:bg-orange-100") 
+                                  : (mode === "dark" ? "hover:bg-gray-800" : "hover:bg-gray-50")
+                              }`}
+                            >
+                              <div className="flex items-center gap-4">
+                                <span className="text-xl">{item.icon}</span>
+                                <span className={`text-[14.5px] font-medium ${item.highlight ? "text-orange-500" : ""}`}>{item.title}</span>
+                              </div>
+                              {item.highlight && <FiChevronRight className="text-orange-500 text-lg" />}
+                            </div>
+                          ))}
+                        </div>
+                      </div>
+                    </>
+                  )}
+                </div>
+
                 <FiSettings
                   onClick={() => { setShowSettings(true); setShowProfileDropdown(false); setShowNotifications(false); setShowGridMenu(false); }}
                   className={`cursor-pointer text-lg hover:text-orange-400 transition-colors ${showSettings ? "text-orange-400" : ""}`}
@@ -441,91 +500,19 @@ export default function Navbar() {
                 />
               </div>
             </div>
-
-            {/* Hamburger Icon for Mobile */}
-            <HamburgerIcon 
-              className="lg:hidden cursor-pointer text-2xl hover:text-orange-400 transition-colors"
-              onClick={() => setIsOpen(!isOpen)}
-            />
           </div>
         </div>
       </div>
 
       {/* MOBILE MENU - Premium Side Drawer as per Mockup */}
-      <div className={`fixed inset-0 z-[200] lg:hidden transition-all duration-300 ${isOpen ? "opacity-100 pointer-events-auto" : "opacity-0 pointer-events-none"}`}>
-        {/* Backdrop */}
-        <div className="absolute inset-0 bg-black/40 backdrop-blur-xs" onClick={() => setIsOpen(false)} />
-        
-        {/* Drawer Content */}
-        <div className={`absolute top-0 right-0 h-full w-[85%] sm:w-[320px] shadow-2xl transition-transform duration-300 transform ${isOpen ? "translate-x-0" : "translate-x-full"} ${mode === "dark" ? "bg-[#15161B] text-white" : "bg-white text-black"}`}>
-          {/* Menu Header with close button */}
-          <div className={`p-4 flex items-center justify-end ${mode === "dark" ? "border-gray-800" : "border-gray-100"}`}>
-            <FiX className="text-2xl cursor-pointer hover:text-orange-500 transition-colors" onClick={() => setIsOpen(false)} />
-          </div>
-          
-          <div className="px-5 pb-10 overflow-y-auto h-[calc(100%-60px)] no-scrollbar">
-            {/* Add Funds Button */}
-            <div className="mb-8">
-              <button 
-                onClick={() => { navigate("/algohub/trading-bot/", { state: { activeSection: "Add Funds" } }); setIsOpen(false); }}
-                className="w-full bg-[#FF6A00] hover:bg-[#E55F00] text-white py-4 rounded-md font-bold text-xl shadow-lg transition-all"
-              >
-                Add Funds
-              </button>
-            </div>
+      <MobileNavDrawer 
+        isOpen={isOpen} 
+        setIsOpen={setIsOpen} 
+        mode={mode} 
+        toggleMode={toggleMode}
+        navigate={navigate} 
+      />
 
-            {/* Navigation Items */}
-            <div className="space-y-1">
-              {mobileNavItems.map((item, idx) => (
-                <div key={idx} className="group">
-                  {item.isTheme ? (
-                    <div className="flex items-center justify-between py-2.5">
-                      <div className="flex items-center gap-4">
-                        <span className={`text-[20px] ${mode === "dark" ? "text-gray-400" : "text-gray-600"}`}>
-                          {item.icon}
-                        </span>
-                        <span className={`text-[16px] font-bold ${mode === "dark" ? "text-gray-100" : "text-gray-900"}`}>
-                          {item.label}
-                        </span>
-                      </div>
-                      <div className={`flex items-center rounded-lg p-0.5 ${mode === "dark" ? "bg-gray-800" : "bg-gray-100"}`}>
-                        <div 
-                          onClick={() => toggleMode()} 
-                          className={`p-1.5 rounded-md cursor-pointer transition-all ${mode === "light" ? "bg-orange-500 text-white" : "text-gray-500 hover:text-gray-300"}`}
-                        >
-                          <FaSun size={12} />
-                        </div>
-                        <div 
-                          onClick={() => toggleMode()} 
-                          className={`p-1.5 rounded-md cursor-pointer transition-all ${mode === "dark" ? "bg-gray-700 text-white" : "text-gray-400 hover:text-gray-600"}`}
-                        >
-                          <FaMoon size={12} />
-                        </div>
-                      </div>
-                    </div>
-                  ) : (
-                    <NavLink 
-                      to={item.to || "#"} 
-                      className={({ isActive }) => `flex items-center justify-between py-2.5 rounded-lg transition-all ${isActive ? "text-orange-500" : ""}`}
-                      onClick={() => !item.hasDropdown && setIsOpen(false)}
-                    >
-                      <div className="flex items-center gap-4">
-                        <span className={`text-[20px] ${mode === "dark" ? "text-gray-400" : "text-gray-600"}`}>
-                          {item.icon}
-                        </span>
-                        <span className={`text-[16px] font-bold ${mode === "dark" ? "text-gray-100" : "text-gray-900"}`}>
-                          {item.label}
-                        </span>
-                      </div>
-                      {item.hasDropdown && <FiChevronDown className="text-lg opacity-60" />}
-                    </NavLink>
-                  )}
-                </div>
-              ))}
-            </div>
-          </div>
-        </div>
-      </div>
 
       {/* SIDEBARS / DRAWERS */}
       {showNotifications && (

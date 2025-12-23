@@ -15,12 +15,20 @@ const Chart = () => {
   return (
     <div className={`${mode === "dark" ? "bg-[#15161B]" : "bg-white"} transition-colors duration-300`}>
         <TopBar symbol={symbol} strike={strike} />
-        <div className='flex justify-center'>
-          <TradingChart symbol={symbol} strike={strike} />
-        <TradingPage symbol={symbol} strike={strike} />
-        <RightSidebar symbol={symbol} strike={strike} />
+        <div className='flex flex-col lg:flex-row justify-center w-full'>
+          <div className="w-full lg:w-auto">
+            <TradingChart symbol={symbol} strike={strike} />
+          </div>
+          <div className="hidden lg:block">
+            <TradingPage symbol={symbol} strike={strike} />
+          </div>
+          <div className="hidden lg:block">
+            <RightSidebar symbol={symbol} strike={strike} />
+          </div>
         </div>
-        <TradingTabs symbol={symbol} strike={strike} />
+        <div>
+            <TradingTabs symbol={symbol} strike={strike} />
+        </div>
     </div>
   )
 }

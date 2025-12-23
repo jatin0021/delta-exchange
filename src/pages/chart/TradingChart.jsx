@@ -1,5 +1,6 @@
 import React, { useContext } from "react";
 import Mycontext from "../../context/Mycontext";
+import TradingViewWidget from "../../components/TradingViewWidget";
 
 const ChartSection = () => {
   const { mode } = useContext(Mycontext);
@@ -10,11 +11,8 @@ const ChartSection = () => {
         mode === "dark" 
           ? "bg-[#15161B] border-gray-700" 
           : "bg-white border-gray-200"
-      } border shadow-sm overflow-hidden transition-colors duration-300`}
-      style={{
-        width: "840px",
-        height: "554px",
-      }}
+      } border shadow-sm overflow-hidden transition-colors duration-300 w-full lg:w-[840px] h-[400px] lg:h-[554px]`}
+
     >
       {/* Header Tabs */}
       <div className={`flex items-center border-b text-sm font-medium ${
@@ -47,12 +45,13 @@ const ChartSection = () => {
       </div>
 
       {/* Empty chart area (will hold API data later) */}
-      <div className={`flex items-center justify-center h-[calc(553px-42px)] ${
+      {/* TradingView Chart */}
+      <div className={`h-[calc(100%-42px)] w-full ${
         mode === "dark" 
-          ? "bg-[#15161B] text-gray-500" 
-          : "bg-white text-gray-400"
-      } text-sm transition-colors duration-300`}>
-        Chart data will be loaded here...
+          ? "bg-[#15161B]" 
+          : "bg-white"
+      }`}>
+        <TradingViewWidget />
       </div>
     </div>
   );

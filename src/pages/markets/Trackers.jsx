@@ -32,7 +32,7 @@ const Trackers = ({ mode }) => {
             : "border-gray-200 bg-white"
         }`}
       >
-        <table className="w-full text-sm min-w-[600px]">
+        <table className="w-full text-sm min-w-[1000px]">
           <thead
             className={`text-xs uppercase transition-colors duration-300 ${
               isDark

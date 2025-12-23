@@ -6,12 +6,10 @@ import WhyDeltaExchangeAPI from './WhyDeltaExchangeAPI'
 import DeltaIntegrationsSection from './DeltaIntegrationsSection'
 import ApiStackSection from './ApiStackSection'
 import FaqSection from './FaqSection'
-import MobileHeader from './MobileHeader'
 
 const Api = () => {
   return (
     <div className="min-h-screen">
-        <MobileHeader />
         <APIHero />
         <HowToUse />
         <ApiPricing />

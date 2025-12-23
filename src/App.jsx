@@ -45,7 +45,7 @@ function AppContent() {
 
   return (
     <>
-      <div className={hideFooter ? "hidden lg:block" : ""}>
+      <div className={isMarketsPage ? "hidden lg:block" : ""}>
         <Navbar />
       </div>
       {isMarketsPage && (
