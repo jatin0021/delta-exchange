@@ -59,7 +59,7 @@ const MobileBottomNav = () => {
     },
     {
       label: "Portfolio",
-      to: "/algohub/trading-bot/",
+      to: "/markets/portfolio",
       icon: (
         <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
           <path d="M7 17L3 13L7 9" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
@@ -78,15 +78,31 @@ const MobileBottomNav = () => {
       }`}
     >
       {navItems.map((item, idx) => {
-        const isActive = location.pathname === item.to || (item.to !== "/" && location.pathname.startsWith(item.to));
+        let isActive = false;
         
+        if (item.label === "Home") {
+            isActive = location.pathname === "/";
+        } else if (item.label === "Markets") {
+            // Active if path starts with /markets but is NOT portfolio or futures (Trade)
+            isActive = location.pathname.startsWith("/markets") && 
+                       !location.pathname.includes("/portfolio") && 
+                       !location.pathname.includes("/futures");
+        } else if (item.label === "Trade") {
+             isActive = location.pathname.includes("/futures");
+        } else if (item.label === "Portfolio") {
+             isActive = location.pathname.includes("/portfolio");
+        } else {
+             // Fallback for Chart/Book
+             isActive = location.pathname.startsWith(item.to);
+        }
+
         return (
           <NavLink
             key={idx}
             to={item.to}
-            className={({ isActive: linkActive }) =>
+            className={() =>
               `relative flex flex-col items-center justify-center gap-1 flex-1 h-full transition-all duration-200 ${
-                (linkActive || (item.to !== "/" && location.pathname.startsWith(item.to)))
+                isActive
                   ? "text-[#FF6A00]"
                   : mode === "dark"
                   ? "text-gray-500 hover:text-gray-300"

@@ -9,6 +9,7 @@ const SubNavbar = ({ mode }) => {
     { name: "Straddle", path: "/markets/straddle" },
     { name: "Trackers", path: "/markets/trackers" },
     { name: "Analytics", path: "/markets/analytics" },
+    { name: "Portfolio", path: "/markets/portfolio" },
   ];
 
   const containerClasses =

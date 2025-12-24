@@ -55,6 +55,9 @@ export default function Footer() {
     { name: "Linkedin", icon: <FaLinkedin />, href: "https://www.linkedin.com/company/delta-exchange/" },
   ];
 
+  const { pathname } = window.location;
+  if(pathname.includes('/portfolio')) return null;
+
   return (
     <footer
       className={`w-full border-t transition-colors duration-300 ${

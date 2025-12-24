@@ -155,7 +155,7 @@ export const MobileNavDrawer = ({ isOpen, setIsOpen, mode, toggleMode, navigate 
                           <span className="text-xl">{item.icon}</span>
                           <span className="text-sm font-bold">{item.label}</span>
                         </div>
-                        <FiChevronRight className={`text-gray-400 transition-transform ${isActive ? "text-orange-500" : ""}`} />
+
                       </>
                     )}
                   </NavLink>

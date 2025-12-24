@@ -6,6 +6,7 @@ import Futures from "./Futures";
 import Straddle from "./Straddle";
 import Trackers from "./Trackers";
 import Analytics from "./Analytics";
+import Portfolio from "../../components/markets/Portfolio";
 import { useContext } from "react";
 import MyContext from "../../context/Mycontext";
 
@@ -26,6 +27,7 @@ export default function Markets() {
           <Route path="/straddle" element={<Straddle mode={mode} />} />
           <Route path="/trackers" element={<Trackers mode={mode} />} />
           <Route path="/analytics" element={<Analytics mode= {mode}/>} />
+          <Route path="/portfolio" element={<Portfolio mode={mode} />} />
         </Routes>
       </div>
     </div>

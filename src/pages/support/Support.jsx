@@ -83,15 +83,18 @@ const Support = () => {
         <div className={`min-h-screen ${mode === 'dark' ? 'bg-[#0b0c0f] text-gray-200' : 'bg-gray-50 text-gray-700'}`}>
             
             {/* Header / Hero */}
-            <div className={`pt-8 pb-10 px-4 flex flex-col items-center justify-center text-center ${mode === 'dark' ? 'bg-[#15161B]' : 'bg-white'} border-b ${mode === 'dark' ? 'border-gray-800' : 'border-gray-200'}`}>
-                <div className="w-full max-w-5xl flex items-center mb-6 relative">
+            {/* Header / Hero */}
+            <div className={`pt-4 pb-6 px-4 md:py-10 flex flex-col items-center justify-center text-center ${mode === 'dark' ? 'bg-[#15161B]' : 'bg-white'} border-b ${mode === 'dark' ? 'border-gray-800' : 'border-gray-200'}`}>
+                
+                {/* Mobile Heading Row */}
+                <div className="w-full max-w-5xl flex items-center md:justify-center mb-4 md:mb-6 relative">
                     <div 
-                        className="absolute left-0 p-2 cursor-pointer hover:bg-gray-100 dark:hover:bg-gray-800 rounded-full transition"
+                        className=" cursor-pointer hover:bg-gray-100 dark:hover:bg-gray-800 rounded-full transition md:absolute md:left-0"
                         onClick={() => navigate(-1)}
                     >
                         <BackIcon />
                     </div>
-                    <h1 className="w-full text-2xl md:text-3xl font-bold">Delta Exchange Help Center</h1>
+                    <h1 className="text-lg md:text-3xl font-bold ml-2 md:ml-0 md:w-full">Delta Exchange Help Center</h1>
                 </div>
 
                 <div className="w-full max-w-xl relative">
@@ -101,7 +104,11 @@ const Support = () => {
                     <input 
                         type="text" 
                         placeholder="Enter the search term here" 
-                        className={`w-full py-3.5 pl-12 pr-4 rounded-lg outline-none border transition-colors ${mode === 'dark' ? 'bg-[#1E1F24] border-gray-700 focus:border-orange-500 text-white' : 'bg-white border-gray-300 focus:border-orange-500 text-black'}`}
+                        className={`w-full py-3 pl-12 pr-4 rounded-lg outline-none border transition-colors ${
+                            mode === 'dark' 
+                            ? 'bg-[#1E1F24] border-gray-700 focus:border-orange-500 text-white' 
+                            : 'bg-[#F0F2F5] border-transparent focus:bg-white focus:border-gray-300 text-black'
+                        }`}
                     />
                 </div>
             </div>
