@@ -248,6 +248,8 @@ export default function Navbar() {
                       if (item.label === "Futures" && location.search.includes("type=")) active = false;
                       if (item.label === "Straddle" && !location.search.includes("type=straddle")) active = false;
                       if (item.label === "Trackers" && !location.search.includes("type=trackers")) active = false;
+                      // Prevent "More" from being active when "Options" (Strategy Builder) is selected
+                      if (item.label === "More" && location.pathname === "/more/strategy-builder") active = false;
 
                       return `text-[14px] font-semibold transition-colors flex items-center gap-0 hover:text-orange-400 ${
                         active ? "text-orange-500" : mode === "dark" ? "text-gray-300" : "text-gray-700"
@@ -687,12 +689,12 @@ export default function Navbar() {
                 <h3 className={`text-xs font-bold uppercase tracking-wider ${mode === "dark" ? "text-gray-500" : "text-gray-400"}`}>Help</h3>
                 <div className="grid grid-cols-2 gap-3">
                   {[
-                    { title: "Raise Support Ticket", icon: <FiGrid /> },
-                    { title: "User Guide", icon: <FiFileText /> },
-                    { title: "Support Center", icon: <FiBarChart2 /> },
-                    { title: "Tax Info", icon: <FiShield /> }
+                    { title: "Raise Support Ticket", icon: <FiGrid />, to: "/support/ticket/" },
+                    { title: "User Guide", icon: <FiFileText />, to: "/support" },
+                    { title: "Support Center", icon: <FiBarChart2 />, to: "/support" },
+                    { title: "Tax Info", icon: <FiShield />, to: "/support" }
                   ].map((item, idx) => (
-                    <div key={idx} className={`p-3 rounded-lg flex items-center justify-between group cursor-pointer transition-all ${mode === "dark" ? "bg-[#1E1F24] hover:bg-gray-800" : "bg-white hover:bg-gray-50"} shadow-sm`}>
+                    <div key={idx} onClick={() => { if(item.to) navigate(item.to); setShowGridMenu(false); }} className={`p-3 rounded-lg flex items-center justify-between group cursor-pointer transition-all ${mode === "dark" ? "bg-[#1E1F24] hover:bg-gray-800" : "bg-white hover:bg-gray-50"} shadow-sm`}>
                       <div className="flex items-center gap-3 overflow-hidden">
                         <span className="text-xl text-gray-400 group-hover:text-orange-500 transition-colors shrink-0">{item.icon}</span>
                         <span className="text-[14.5px] font-semibold whitespace-nowrap overflow-hidden text-ellipsis">{item.title}</span>

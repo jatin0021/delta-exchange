@@ -32,7 +32,7 @@ export const MobileNavDrawer = ({ isOpen, setIsOpen, mode, toggleMode, navigate 
       icon: <FiHeadphones className="text-orange-500" />,
       subItems: [
         { label: "Raise a Support Ticket", to: "/support/ticket" },
-        { label: "Support Center", to: "/support/center" },
+        { label: "Support Center", to: "/support" },
       ]
     },
     { 

@@ -18,6 +18,8 @@ import StrategyBuilder from "./pages/strategy-builder/StrategyBuilder";
 import OptionsAnalytics from "./pages/options-analytics/OptionsAnalytics";
 import Rewards from "./pages/rewards/Rewards";
 import Referral from "./pages/referral/Referral";
+import Support from "./pages/support/Support";
+import SupportTicket from "./pages/support/ticket/SupportTicket";
 
 import Account from "./pages/account/Account";
 
@@ -66,6 +68,8 @@ function AppContent() {
           <Route path="/more/analytics/" element={<OptionsAnalytics mode={mode} />} />
           <Route path="/more/rewards/" element={<Rewards mode={mode} />} />
           <Route path="/more/referral-program/" element={<Referral mode={mode} />} />
+          <Route path="/support" element={<Support />} />
+          <Route path="/support/ticket/" element={<SupportTicket />} />
         </Routes>
       </div>
       {!hideFooter && <Footer />}
