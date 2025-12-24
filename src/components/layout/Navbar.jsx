@@ -1,5 +1,5 @@
 import { useState, useContext } from "react";
-import { NavLink, useNavigate } from "react-router-dom";
+import { NavLink, useNavigate, useLocation } from "react-router-dom";
 import Mycontext from "../../context/Mycontext";
 import { DeltaLogo } from "./DeltaLogo";
 import { MobileNavDrawer } from "./MobileNavDrawer";
@@ -55,14 +55,14 @@ const WalletIcon = () => (
   </svg>
 );
 
-const PositionsIcon = ({ className }) => (
-  <svg xmlns="http://www.w3.org/2000/svg" width="14" height="16" viewBox="0 0 14 16" fill="none" className={className}>
+const PositionsIcon = ({ className, ...props }) => (
+  <svg xmlns="http://www.w3.org/2000/svg" width="14" height="16" viewBox="0 0 14 16" fill="none" className={className} {...props}>
     <path d="M2.35653 8.96696L1.44653 8.00696L5.90653 3.46696L4.17653 1.75696L11.4165 0.886963L10.4965 7.99696L8.78653 6.41696L5.58653 9.36696L3.95653 7.86696L2.91653 14.847L10.0765 13.957L8.46653 12.327L12.9765 7.86696L12.0165 6.87696" stroke="currentColor" strokeWidth="1" strokeLinecap="round" fill="none" />
   </svg>
 );
 
-const SupportIcon = ({ className }) => (
-  <svg width="14" height="16" viewBox="0 0 18 23" fill="none" xmlns="http://www.w3.org/2000/svg" className={className}>
+const SupportIcon = ({ className, ...props }) => (
+  <svg width="14" height="16" viewBox="0 0 18 23" fill="none" xmlns="http://www.w3.org/2000/svg" className={className} {...props}>
     <path d="M8.625 21.9718V19.2718C4.8675 19.0768 1.875 15.9568 1.875 12.1543C1.875 8.2243 5.07 5.0293 9 5.0293C12.93 5.0293 16.125 8.2243 16.125 12.1543C16.125 15.8668 13.545 19.6018 9.6975 21.4543L8.625 21.9718ZM9 6.5293C5.895 6.5293 3.375 9.0493 3.375 12.1543C3.375 15.2593 5.895 17.7793 9 17.7793H10.125V19.5043C12.855 17.7793 14.625 14.9443 14.625 12.1543C14.625 9.0493 12.105 6.5293 9 6.5293ZM8.25 15.1543H9.75V16.6543H8.25V15.1543ZM9.75 14.0293H8.25C8.25 11.5918 10.5 11.7793 10.5 10.2793C10.5 9.4543 9.825 8.7793 9 8.7793C8.175 8.7793 7.5 9.4543 7.5 10.2793H6C6 8.6218 7.3425 7.2793 9 7.2793C10.6575 7.2793 12 8.6218 12 10.2793C12 12.1543 9.75 12.3418 9.75 14.0293Z" fill="currentColor" />
   </svg>
 );
@@ -108,6 +108,7 @@ export default function Navbar() {
   });
   const { mode, toggleMode } = useContext(Mycontext);
   const navigate = useNavigate();
+  const location = useLocation();
   
   const handleDropdownEnter = (type) => {
     if (type === "AlgoHub") setShowAlgoDropdown(true);
@@ -129,8 +130,8 @@ export default function Navbar() {
     { label: "Markets", to: "/markets/" },
     { label: "Futures", to: "/chart/" },
     { label: "Options", to: "/more/strategy-builder" },
-    { label: "Straddle", to: "/chart/" },
-    { label: "Trackers", to: "/chart/" },
+    { label: "Straddle", to: "/chart/?type=straddle" },
+    { label: "Trackers", to: "/chart/?type=trackers" },
     { label: "AlgoHub", to: "/algohub/", hasDropdown: true },
     { label: "More", to: "/more/", hasDropdown: true },
   ];
@@ -214,11 +215,11 @@ export default function Navbar() {
     <nav
       className={`${
         mode === "dark"
-          ? "bg-[#15161B] text-white border-gray-700"
-          : "bg-white text-black border-gray-300"
-      } border-b w-full transition-colors duration-300 sticky top-0 z-[100]`}
+          ? "bg-[#15161B] text-white"
+          : "bg-white text-black"
+      } shadow-sm w-full transition-colors duration-300 sticky top-0 z-[100]`}
     >
-      <div className="px-4 flex items-center justify-between h-12">
+      <div className="sm:mx-5 px-4 flex items-center justify-between h-12">
         {/* LEFT: Logo + Nav Links */}
         <div className="flex items-center gap-7">
           <NavLink to="/" className="flex items-center">
@@ -242,11 +243,16 @@ export default function Navbar() {
                 <div className="flex items-center">
                   <NavLink
                     to={item.to}
-                    className={({ isActive }) =>
-                      `text-[14px] font-semibold transition-colors flex items-center gap-0 hover:text-orange-400 ${
-                        isActive ? "text-orange-500" : mode === "dark" ? "text-gray-300" : "text-gray-700"
+                    className={({ isActive }) => {
+                      let active = isActive;
+                      if (item.label === "Futures" && location.search.includes("type=")) active = false;
+                      if (item.label === "Straddle" && !location.search.includes("type=straddle")) active = false;
+                      if (item.label === "Trackers" && !location.search.includes("type=trackers")) active = false;
+
+                      return `text-[14px] font-semibold transition-colors flex items-center gap-0 hover:text-orange-400 ${
+                        active ? "text-orange-500" : mode === "dark" ? "text-gray-300" : "text-gray-700"
                       }`
-                    }
+                    }}
                   >
                     {item.label}
                     {item.hasDropdown && <RiArrowDropDownLine className="text-xl -ml-0.5" />}

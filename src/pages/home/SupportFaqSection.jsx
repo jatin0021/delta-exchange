@@ -28,30 +28,30 @@ const SupportFaqSection = ({ mode }) => {
   const faqBg = isDark ? "bg-[#161A22]" : "bg-white";
 
   return (
-    <section className={`${bgColor} ${textColor} py-16 md:py-24 px-4 sm:px-6 transition-colors duration-300 overflow-hidden`}>
-      <div className="flex flex-col lg:flex-row gap-12 lg:gap-16 w-full max-w-6xl mx-auto">
+    <section className={`${bgColor} ${textColor} py-12 md:py-16 px-4 sm:px-6 transition-colors duration-300 overflow-hidden`}>
+      <div className="flex flex-col lg:flex-row gap-8 lg:gap-12 w-full max-w-6xl mx-auto">
         {/* Left Support Card */}
         <div
-          className="bg-gradient-to-br from-[#42260E] to-[#2A170A] rounded-[2rem] p-8 sm:p-10 relative overflow-hidden flex-shrink-0 w-full lg:w-[380px] min-h-[450px] shadow-2xl flex flex-col justify-between"
+          className="bg-gradient-to-br from-[#42260E] to-[#2A170A] rounded-[2rem] p-6 sm:p-8 relative overflow-hidden flex-shrink-0 w-full lg:w-[320px] min-h-[400px] shadow-2xl flex flex-col justify-between"
         >
           <div className="absolute inset-0 opacity-10 bg-[url('https://www.transparenttextures.com/patterns/wavecut.png')] bg-cover"></div>
           
           {/* Top light effect */}
-          <div className="absolute -top-10 -left-10 w-40 h-40 bg-orange-500/10 rounded-full blur-3xl"></div>
+          <div className="absolute -top-10 -left-10 w-32 h-32 bg-orange-500/10 rounded-full blur-3xl"></div>
 
-          <div className="relative z-10 space-y-12">
+          <div className="relative z-10 space-y-8">
             {/* Header */}
             <div>
-              <h2 className="text-3xl sm:text-4xl font-black text-white leading-tight">
+              <h2 className="text-2xl sm:text-3xl font-black text-white leading-tight">
                 24x7 Customer Support
               </h2>
             </div>
 
             {/* Support Items */}
-            <div className="space-y-10">
+            <div className="space-y-6">
               <div>
-                <p className="text-orange-400/60 mb-2 text-xs font-black uppercase tracking-[0.2em]">Have a question?</p>
-                <p className="text-gray-100 text-lg leading-relaxed">
+                <p className="text-orange-400/60 mb-1.5 text-[10px] font-black uppercase tracking-[0.2em]">Have a question?</p>
+                <p className="text-gray-100 text-base leading-relaxed">
                   Go to{" "}
                   <a href="#" className="text-orange-400 font-black border-b-2 border-orange-400/30 hover:border-orange-400 transition-all">
                     Support Centre
@@ -61,8 +61,8 @@ const SupportFaqSection = ({ mode }) => {
               </div>
 
               <div>
-                <p className="text-orange-400/60 mb-2 text-xs font-black uppercase tracking-[0.2em]">Need more help?</p>
-                <p className="text-gray-100 text-lg leading-relaxed">
+                <p className="text-orange-400/60 mb-1.5 text-[10px] font-black uppercase tracking-[0.2em]">Need more help?</p>
+                <p className="text-gray-100 text-base leading-relaxed">
                   Raise a{" "}
                   <a href="#" className="text-orange-400 font-black border-b-2 border-orange-400/30 hover:border-orange-400 transition-all">
                     support ticket
@@ -75,17 +75,17 @@ const SupportFaqSection = ({ mode }) => {
 
             {/* Community */}
             <div>
-              <p className="text-orange-400/60 mb-6 text-xs font-black uppercase tracking-[0.2em]">
+              <p className="text-orange-400/60 mb-4 text-[10px] font-black uppercase tracking-[0.2em]">
                 Interact with our community
               </p>
-              <div className="flex items-center gap-4">
+              <div className="flex items-center gap-3">
                 {[
                   { icon: <FaTimes />, label: 'X' },
                   { icon: <FaInstagram />, label: 'Instagram' },
                   { icon: <FaTelegramPlane />, label: 'Telegram' },
                   { icon: <FaYoutube />, label: 'Youtube' }
                 ].map((social, i) => (
-                  <a key={i} href="#" className="bg-white/10 backdrop-blur-md w-11 h-11 flex items-center justify-center rounded-xl text-white hover:bg-orange-500 transition-all hover:scale-110 shadow-lg" title={social.label}>
+                  <a key={i} href="#" className="bg-white/10 backdrop-blur-md w-9 h-9 flex items-center justify-center rounded-xl text-white hover:bg-orange-500 transition-all hover:scale-110 shadow-lg" title={social.label}>
                     {social.icon}
                   </a>
                 ))}
@@ -95,39 +95,39 @@ const SupportFaqSection = ({ mode }) => {
         </div>
 
         {/* Right FAQ Section */}
-        <div className="flex-1 flex flex-col justify-start w-full gap-8 sm:gap-10">
-          <div className="text-center lg:text-left space-y-3">
-             <p className="text-orange-500 font-black tracking-[0.2em] text-xs uppercase opacity-80">Got Questions?</p>
-             <h2 className={`text-3xl sm:text-4xl lg:text-5xl font-black leading-tight ${isDark ? 'text-white' : 'text-gray-900'}`}>
+        <div className="flex-1 flex flex-col justify-start w-full gap-6 sm:gap-8">
+          <div className="text-center lg:text-left space-y-2">
+             <p className="text-orange-500 font-black tracking-[0.2em] text-[10px] uppercase opacity-80">Got Questions?</p>
+             <h2 className={`text-xl sm:text-3xl lg:text-4xl font-black leading-tight ${isDark ? 'text-white' : 'text-gray-900'}`}>
                Frequently Asked Questions
              </h2>
           </div>
 
-          <div className="grid gap-4 sm:gap-6">
+          <div className="grid gap-3 sm:gap-4">
             {faqs.map((faq, index) => (
               <div
                 key={index}
-                className={`${faqBg} rounded-2xl px-6 sm:px-8 py-5 sm:py-6 cursor-pointer transition-all border-2 ${
+                className={`${faqBg} rounded-2xl px-5 sm:px-6 py-4 sm:py-5 cursor-pointer transition-all border-2 ${
                   openIndex === index ? "border-orange-500 shadow-[0_10px_30px_rgba(249,115,22,0.1)]" : "border-transparent shadow-sm hover:border-orange-500/30"
                 }`}
                 onClick={() => setOpenIndex(index === openIndex ? null : index)}
               >
-                <div className="flex justify-between items-center gap-6">
-                  <h3 className={`text-lg sm:text-xl font-bold leading-tight ${isDark ? 'text-white' : 'text-gray-900'}`}>
+                <div className="flex justify-between items-center gap-4">
+                  <h3 className={`text-base sm:text-lg font-bold leading-tight ${isDark ? 'text-white' : 'text-gray-900'}`}>
                     {faq.question}
                   </h3>
                   <div
-                    className={`shrink-0 w-10 h-10 flex items-center justify-center rounded-xl transition-all duration-300 ${
+                    className={`shrink-0 w-8 h-8 flex items-center justify-center rounded-xl transition-all duration-300 ${
                       openIndex === index ? "bg-orange-500 text-white rotate-180" : "bg-orange-500/10 text-orange-500"
                     }`}
                   >
-                    <IoChevronDownSharp className="text-xl" />
+                    <IoChevronDownSharp className="text-lg" />
                   </div>
                 </div>
 
                 {openIndex === index && (
-                  <div className="mt-5 pt-5 border-t border-gray-100 dark:border-gray-800 animate-in fade-in slide-in-from-top-2 duration-300">
-                    <p className={`${isDark ? 'text-gray-400' : 'text-gray-600'} text-base sm:text-lg leading-relaxed opacity-90`}>
+                  <div className="mt-3 pt-3 border-t border-gray-100 dark:border-gray-800 animate-in fade-in slide-in-from-top-2 duration-300">
+                    <p className={`${isDark ? 'text-gray-400' : 'text-gray-600'} text-sm sm:text-base leading-relaxed opacity-90`}>
                       {faq.answer}
                     </p>
                   </div>
