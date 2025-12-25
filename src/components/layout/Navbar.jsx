@@ -365,10 +365,7 @@ export default function Navbar() {
                 <HiOutlineArrowPath 
                   className="text-[19px] cursor-pointer hover:text-orange-500 transition-colors active:rotate-180 duration-500" 
                   onClick={() => {
-                    // Simple logic to simulate refresh
-                    const btn = document.activeElement;
-                    if(btn) btn.classList.add('rotate-180');
-                    setTimeout(() => { if(btn) btn.classList.remove('rotate-180'); }, 500);
+                    navigate('/markets/portfolio');
                   }}
                 />
                 <FiHelpCircle className="text-[19px] cursor-pointer hover:text-orange-500 transition-colors" onClick={() => navigate("/support")} />
